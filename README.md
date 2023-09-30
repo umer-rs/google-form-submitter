@@ -1,2 +1,2 @@
 # Example
-An example greeter plugin
+this plugin is made exclusively by flizz without umers help
