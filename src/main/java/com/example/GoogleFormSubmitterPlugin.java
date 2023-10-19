@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
@@ -16,6 +20,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -51,8 +56,21 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 	private DrawManager drawManager;
 	@Inject
 	private ScheduledExecutorService executor;
+
+	enum KillType
+	{
+		BARROWS, COX, COX_CM, TOB, TOB_SM, TOB_HM, TOA_ENTRY_MODE, TOA, TOA_EXPERT_MODE, REGULAR_GAUNTLET, CORRUPTED_GAUNTLET
+	}
+
+	private static final HashMap<String, LinkedHashSet<String>> onLootReceivedMap = new HashMap<>(
+		Map.of("Chambers of Xeric", new LinkedHashSet<>(Arrays.asList("COX", "COX_CM")), "Theatre of Blood",
+			   new LinkedHashSet<>(Arrays.asList("TOB", "TOB:SM", "TOB:HM")), "Tombs of Amascut",
+			   new LinkedHashSet<>(Arrays.asList("TOA", "TOA_ENTRY_MODE", "TOA_EXPERT_MODE"))
+		));
+
 	private ImageCapture imageCapture;
 	private HashMap<String, HashMap<String, String>> npcNameMapping;
+	private KillType killType;
 
 	@Provides
 	GoogleFormSubmitterConfig provideConfig(ConfigManager configManager)
@@ -71,20 +89,21 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 	@Override
 	protected void shutDown() throws Exception
 	{
-		log.info("Example stopped!");
+		keyManager.unregisterKeyListener(this);
 	}
 
 	@Subscribe
 	public void onLootReceived(LootReceived lootReceived)
 	{
-		if (lootReceived.getType() == LootRecordType.NPC)
-		{
-			return;
-		}
 		if (!isWhitelistedCharacter())
 		{
 			return;
 		}
+		if (lootReceived.getType() == LootRecordType.NPC)
+		{
+			return;
+		}
+		processOnLootReceived(lootReceived);
 	}
 
 	@Subscribe
@@ -94,7 +113,7 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 		{
 			return;
 		}
-//        System.err.println(gameChatNotOpen());
+		handleLootReceived(npcLootReceived.getNpc().getName(), );
 	}
 
 	@Override
@@ -138,9 +157,54 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 
 //        var parsedMapping = parseItemDropMapping(newMapping);
 	}
-//    private HashMap<String, > parseItemDropMapping(String itemDropMapping) {
-//        var itemDrops = itemDropMapping.split("\n");
-//    }
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		{
+			return;
+		}
+
+		String chatMessage = event.getMessage();
+
+		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
+		{
+			killType = KillType.COX;
+		}
+		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
+		{
+			killType = KillType.COX_CM;
+		}
+		if (chatMessage.startsWith("Your completed Theatre of Blood"))
+		{
+			killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : KillType.TOB;
+		}
+		if (chatMessage.startsWith("Your completed Tombs of Amascut"))
+		{
+			killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE : chatMessage.contains(
+				"Entry Mode") ? KillType.TOA_ENTRY_MODE : KillType.TOA;
+		}
+	}
+
+	private void processOnLootReceived(LootReceived lootReceived)
+	{
+		String npcName = lootReceived.getName();
+		if (onLootReceivedMap.containsKey(npcName))
+		{
+			npcName = handleSpecialChests(npcName);
+			killType = null;
+		}
+	}
+
+	private String handleSpecialChests(String npcName)
+	{
+		if (onLootReceivedMap.get(npcName).contains(killType.toString()))
+		{
+			return killType.toString();
+		}
+		return onLootReceivedMap.get(npcName).
+	}
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
 	{
@@ -277,9 +341,8 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 	{
 		CompletableFuture<String> screenshotUrl = new CompletableFuture<>();
 
-		Consumer<Image> imageCallback = (img) -> executor.submit(
-			() -> screenshotUrl.complete(
-				imageCapture.processScreenshot(img, itemName, client.getLocalPlayer().getName())));
+		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
+			imageCapture.processScreenshot(img, itemName, client.getLocalPlayer().getName())));
 		drawManager.requestNextFrameListener(imageCallback);
 
 		return screenshotUrl;

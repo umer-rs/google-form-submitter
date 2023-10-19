@@ -13,9 +13,15 @@ public class Logic
 				ItemID.CLUE_SCROLL_ELITE_12075, ItemID.CLUE_SCROLL_ELITE_12076, ItemID.CLUE_SCROLL_ELITE_12077
 		));
 
-	static int handleCorruptedGauntletDrops(Collection<ItemStack> itemStackCollection)
+	static GoogleFormSubmitterPlugin.KillType handleCorruptedGauntletDrops(Collection<ItemStack> itemStackCollection)
 	{
 		itemStackCollection.removeIf(e -> corruptedGauntletDrops.contains(e.getId()));
-		return itemStackCollection.size();
+		if (itemStackCollection.size() == 2) {
+			return GoogleFormSubmitterPlugin.KillType.REGULAR_GAUNTLET;
+		}
+		if (itemStackCollection.size() == 3) {
+			return GoogleFormSubmitterPlugin.KillType.CORRUPTED_GAUNTLET;
+		}
+		return null;
 	}
 }
