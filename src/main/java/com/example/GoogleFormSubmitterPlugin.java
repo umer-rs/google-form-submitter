@@ -72,7 +72,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		var itemDropMapping = config.itemDropMapping();
+		this.updateNameItemMapping();
 		this.imageCapture = new ImageCapture(config.ibbApiKey());
 	}
 
@@ -180,6 +180,20 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		}
 	}
 
+	private List<NpcDropTuple> handleItemStackCollection(String npcName, Collection<ItemStack> itemStackCollection)
+	{
+		if (!nameItemMapping.containsKey(npcName))
+		{
+			return null;
+		}
+		HashMap<Integer, NpcDropTuple> acceptableDrops = nameItemMapping.get(npcName);
+		return itemStackCollection.stream()
+								  .map(ItemStack::getId)
+								  .map(id -> acceptableDrops.getOrDefault(id, null))
+								  .filter(Objects::nonNull)
+								  .collect(Collectors.toList());
+	}
+
 	// Process onLootReceived event bus to identify the drop source
 	private void processOnLootReceived(LootReceived lootReceived)
 	{
@@ -222,22 +236,18 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			{
 				return;
 			}
-			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(constructSubmissionUrl(url, npcDropTuple)));
+			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(constructSubmissionUrl(url, npcDropTuple), npcDropTuple.getItemName()));
 		});
 	}
 
-	private List<NpcDropTuple> handleItemStackCollection(String npcName, Collection<ItemStack> itemStackCollection)
+	private void openGameChatbox()
 	{
-		if (!nameItemMapping.containsKey(npcName))
+		if (getChatboxId() == 1)
 		{
-			return null;
+			return;
 		}
-		HashMap<Integer, NpcDropTuple> acceptableDrops = nameItemMapping.get(npcName);
-		return itemStackCollection.stream()
-								  .map(ItemStack::getId)
-								  .map(id -> acceptableDrops.getOrDefault(id, null))
-								  .filter(Objects::nonNull)
-								  .collect(Collectors.toList());
+
+		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
 	}
 
 	private CompletableFuture<String> takeScreenshot(String npcName)
@@ -246,8 +256,12 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
 			imageCapture.processScreenshot(img, client.getLocalPlayer().getName(), npcName)));
-		drawManager.requestNextFrameListener(imageCallback);
+		executor.submit(() -> {
+			while (getChatboxId() != 1) {
 
+			}
+			drawManager.requestNextFrameListener(imageCallback);
+		});
 		return screenshotUrl;
 	}
 
@@ -309,7 +323,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		return sb.toString().replaceAll("\\s", "%20");
 	}
 
-	private void submitScreenshot(String googleFormUrl)
+	private void submitScreenshot(String googleFormUrl, String itemName)
 	{
 		try
 		{
@@ -328,7 +342,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			}
 			else
 			{
-				var message = new ChatMessageBuilder().append("Drop was submitted successfully.");
+				var message = new ChatMessageBuilder().append(String.format("Submission of %s successful.", itemName));
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
@@ -358,15 +372,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private int getChatboxId()
 	{
 		return client.getVarcIntValue(41);
-	}
-
-	private void openGameChatbox()
-	{
-		if (getChatboxId() == 1)
-		{
-			return;
-		}
-		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
 	}
 
 	private boolean isWhitelistedCharacter()
