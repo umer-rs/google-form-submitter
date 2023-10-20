@@ -39,11 +39,11 @@ public class ImageCapture
 		this.ibbImageUploadUrl = HttpUrl.get(IBB_IMAGE_UPLOAD_URL + ibbApiKey);
 	}
 
-	String processScreenshot(Image img, String playerName, String npcName)
+	String processScreenshot(Image img, String playerName, String suffix)
 	{
 		BufferedImage screenshot = ImageUtil.bufferedImageFromImage(img);
 		File playerFolder = new File(SCREENSHOT_DIR, playerName + File.separator + "Google Form Submitter");
-		File screenshotFile = new File(playerFolder, npcName + '_' + format(new Date()) + ".png");
+		File screenshotFile = new File(playerFolder, String.format("%s-%s.png", format(new Date()), suffix));
 		playerFolder.mkdirs();
 		try
 		{

@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -206,7 +207,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
 	{
-		Set<NpcDropTuple> dropsToSubmit = this.handleItemStackCollection(npcName, itemStackCollection);
+		List<NpcDropTuple> dropsToSubmit = this.handleItemStackCollection(npcName, itemStackCollection);
 		if (dropsToSubmit == null || dropsToSubmit.isEmpty())
 		{
 			return;
@@ -225,7 +226,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		});
 	}
 
-	private Set<NpcDropTuple> handleItemStackCollection(String npcName, Collection<ItemStack> itemStackCollection)
+	private List<NpcDropTuple> handleItemStackCollection(String npcName, Collection<ItemStack> itemStackCollection)
 	{
 		if (!nameItemMapping.containsKey(npcName))
 		{
@@ -236,7 +237,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 								  .map(ItemStack::getId)
 								  .map(id -> acceptableDrops.getOrDefault(id, null))
 								  .filter(Objects::nonNull)
-								  .collect(Collectors.toSet());
+								  .collect(Collectors.toList());
 	}
 
 	private CompletableFuture<String> takeScreenshot(String npcName)
@@ -323,6 +324,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 													  .runeLiteFormattedMessage(message.build())
 													  .build());
 				log.info(connection.getResponseMessage());
+				log.info(googleFormUrl);
 			}
 			else
 			{
