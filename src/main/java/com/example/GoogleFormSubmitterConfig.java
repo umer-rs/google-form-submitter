@@ -13,7 +13,7 @@ public interface GoogleFormSubmitterConfig extends Config
 		return "";
 	}
 
-	@ConfigItem(position = 1, keyName = "formId", name = "Google Form ID", description = "Google " + "Form ID")
+	@ConfigItem(position = 1, keyName = "formId", name = "Google Form ID", description = "Google Form ID")
 	default String formId()
 	{
 		return "";
@@ -37,7 +37,19 @@ public interface GoogleFormSubmitterConfig extends Config
 		return "//id,name";
 	}
 
-	@ConfigItem(position = 5, keyName = "itemDropMapping", name = "Drops Mapping", description = "Mapping of drops to Google Form Name")
+	@ConfigItem(position = 5, keyName = "npcNameEntry", name = "NPC Name Entry Key", description = "NPC Entry")
+	default String npcNameEntry()
+	{
+		return "";
+	}
+
+	@ConfigItem(position = 6, keyName = "itemNameEntry", name = "Item Name Entry Key", description = "Item Entry")
+	default String itemNameEntry()
+	{
+		return "";
+	}
+
+	@ConfigItem(position = 7, keyName = "itemDropMapping", name = "Drops Mapping", description = "Mapping of drops to Google Form Name")
 	default String itemDropMapping()
 	{
 		return "";
