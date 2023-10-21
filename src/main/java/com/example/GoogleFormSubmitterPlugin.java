@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
@@ -19,7 +18,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -74,6 +72,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	{
 		this.updateNameItemMapping();
 		this.imageCapture = new ImageCapture(config.ibbApiKey());
+		this.killType = null;
 	}
 
 	@Subscribe
@@ -201,20 +200,12 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 		if (Logic.isRaid(npcName))
 		{
-			Logic.handleRaidsType(npcName, killType.toString());
+			npcName = Logic.handleRaidsType(npcName, killType.toString());
 			killType = null;
 		}
 		else if (npcName.equals("The Gauntlet"))
 		{
-			var nonUniqueDrops = Logic.handleCorruptedGauntletDrops(lootReceived.getItems());
-			if (nonUniqueDrops == 2)
-			{
-				npcName = "Regular Gauntlet";
-			}
-			else if (nonUniqueDrops == 3)
-			{
-				npcName = "Corrupted Gauntlet";
-			}
+			npcName = Logic.handleGauntletType(lootReceived.getItems());
 		}
 		handleLootReceived(npcName, lootReceived.getItems());
 	}
@@ -227,16 +218,16 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			return;
 		}
 
-		// Get drops to be submitted. If size > 0, do rest.
-		this.openGameChatbox();
 		CompletableFuture<String> screenshotUrl = this.takeScreenshot(npcName);
-
 		screenshotUrl.thenAccept(url -> {
 			if (url.isEmpty())
 			{
 				return;
 			}
-			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(constructSubmissionUrl(url, npcDropTuple), npcDropTuple.getItemName()));
+			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(
+				constructSubmissionUrl(url, npcDropTuple),
+				npcDropTuple.getItemName()
+			));
 		});
 	}
 
@@ -246,7 +237,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			return;
 		}
-
 		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
 	}
 
@@ -254,14 +244,15 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	{
 		CompletableFuture<String> screenshotUrl = new CompletableFuture<>();
 
+		this.openGameChatbox();
 		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
 			imageCapture.processScreenshot(img, client.getLocalPlayer().getName(), npcName)));
-		executor.submit(() -> {
-			while (getChatboxId() != 1) {
 
-			}
-			drawManager.requestNextFrameListener(imageCallback);
-		});
+		while (getChatboxId() != 1)
+		{
+		}
+		drawManager.requestNextFrameListener(imageCallback);
+
 		return screenshotUrl;
 	}
 
