@@ -8,10 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import lombok.Data;
@@ -41,11 +39,11 @@ public class ImageCapture
 		this.ibbImageUploadUrl = HttpUrl.get(IBB_IMAGE_UPLOAD_URL + ibbApiKey);
 	}
 
-	String processScreenshot(Image img, String itemName, String playerName)
+	String processScreenshot(Image img, String playerName, String suffix)
 	{
 		BufferedImage screenshot = ImageUtil.bufferedImageFromImage(img);
 		File playerFolder = new File(SCREENSHOT_DIR, playerName + File.separator + "Google Form Submitter");
-		File screenshotFile = new File(playerFolder, itemName + '_' + format(new Date()) + ".png");
+		File screenshotFile = new File(playerFolder, String.format("%s-%s.png", format(new Date()), suffix));
 		playerFolder.mkdirs();
 		try
 		{
@@ -70,6 +68,10 @@ public class ImageCapture
 
 		try (Response response = okHttpClient.newCall(request).execute())
 		{
+			if (response.body() == null)
+			{
+				return "";
+			}
 			try (InputStream in = response.body().byteStream())
 			{
 				ImageUploadResponse imageUploadResponse = gson.fromJson(

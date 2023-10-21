@@ -2,20 +2,23 @@ package com.example;
 
 import com.google.inject.Provides;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -25,8 +28,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemStack;
-import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.loottracker.LootReceived;
@@ -35,7 +36,7 @@ import net.runelite.http.api.loottracker.LootRecordType;
 
 @Slf4j
 @PluginDescriptor(name = "Google Forms Submitter")
-public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
+public class GoogleFormSubmitterPlugin extends Plugin
 {
 	@Inject
 	private Client client;
@@ -46,14 +47,20 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 	@Inject
 	private ChatMessageManager chatMessageManager;
 	@Inject
-	private KeyManager keyManager;
-	@Inject
 	private DrawManager drawManager;
 	@Inject
 	private ScheduledExecutorService executor;
-	private ImageCapture imageCapture;
-	private HashMap<String, HashMap<String, String>> npcNameMapping;
 
+	enum KillType
+	{
+		COX, COX_CM, TOB, TOB_SM, TOB_HM, TOA, TOA_EM, TOA_XM
+	}
+
+	private ImageCapture imageCapture;
+	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
+	private KillType killType;
+
+	//<editor-fold desc="Event Bus/Config Methods">
 	@Provides
 	GoogleFormSubmitterConfig provideConfig(ConfigManager configManager)
 	{
@@ -63,61 +70,9 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
-		var itemDropMapping = config.itemDropMapping();
-		keyManager.registerKeyListener(this);
+		this.updateNameItemMapping();
 		this.imageCapture = new ImageCapture(config.ibbApiKey());
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		log.info("Example stopped!");
-	}
-
-	@Subscribe
-	public void onLootReceived(LootReceived lootReceived)
-	{
-		if (lootReceived.getType() == LootRecordType.NPC)
-		{
-			return;
-		}
-		if (!isWhitelistedCharacter())
-		{
-			return;
-		}
-	}
-
-	@Subscribe
-	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
-	{
-		if (!isWhitelistedCharacter())
-		{
-			return;
-		}
-//        System.err.println(gameChatNotOpen());
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_G)
-		{
-			System.err.println("G");
-			handleLootReceived("Abyssal Sire", null);
-
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-
+		this.killType = null;
 	}
 
 	@Subscribe
@@ -129,54 +84,179 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 		}
 		if (configChanged.getKey().equals("itemDropMapping"))
 		{
-			var newMapping = configChanged.getNewValue();
+			updateNameItemMapping();
 		}
-		if (configChanged.getKey().equals("ibbApiKey"))
+		else if (configChanged.getKey().equals("ibbApiKey"))
 		{
 			this.imageCapture.updateApiKey(configChanged.getNewValue());
 		}
-
-//        var parsedMapping = parseItemDropMapping(newMapping);
 	}
-//    private HashMap<String, > parseItemDropMapping(String itemDropMapping) {
-//        var itemDrops = itemDropMapping.split("\n");
-//    }
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		{
+			return;
+		}
+
+		String chatMessage = event.getMessage();
+
+		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
+		{
+			killType = KillType.COX;
+		}
+		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
+		{
+			killType = KillType.COX_CM;
+		}
+		if (chatMessage.startsWith("Your completed Theatre of Blood"))
+		{
+			killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : KillType.TOB;
+		}
+		if (chatMessage.startsWith("Your completed Tombs of Amascut"))
+		{
+			killType = chatMessage.contains("Expert Mode") ? KillType.TOA_XM : chatMessage.contains(
+				"Entry Mode") ? KillType.TOA_EM : KillType.TOA;
+		}
+	}
+
+	@Subscribe
+	public void onLootReceived(LootReceived lootReceived)
+	{
+		if (!isWhitelistedCharacter())
+		{
+			return;
+		}
+		if (lootReceived.getType() == LootRecordType.NPC)
+		{
+			return;
+		}
+		processOnLootReceived(lootReceived);
+	}
+
+	@Subscribe
+	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
+	{
+		var npc = npcLootReceived.getNpc();
+		var lootReceived = npcLootReceived.getItems();
+		if (!isWhitelistedCharacter())
+		{
+			return;
+		}
+
+		var npcName = npc.getName();
+		if (npcName == null)
+		{
+			return;
+		}
+		handleLootReceived(npcName, lootReceived);
+	}
+	//</editor-fold>
+
+	private void updateNameItemMapping() throws NumberFormatException
+	{
+		String rawConfig = config.itemDropMapping().replaceAll("\\s*,\\s*", ",");
+		String[] rows = rawConfig.split("\n");
+		HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping = new HashMap<>();
+		for (String row : rows)
+		{
+			String[] elements = row.split(",");
+			if (elements.length != 4)
+			{
+				continue;
+			}
+			String npcName = elements[0];
+			int itemId = Integer.parseInt(elements[1]);
+			String npcSubmissionName = elements[2];
+			String itemSubmissionName = elements[3];
+
+			NpcDropTuple mappedTuple = new NpcDropTuple(npcSubmissionName, itemSubmissionName);
+			HashMap<Integer, NpcDropTuple> value = nameItemMapping.getOrDefault(npcName, new HashMap<>());
+			value.put(itemId, mappedTuple);
+			nameItemMapping.put(npcName, value);
+			this.nameItemMapping = nameItemMapping;
+		}
+	}
+
+	private List<NpcDropTuple> handleItemStackCollection(String npcName, Collection<ItemStack> itemStackCollection)
+	{
+		if (!nameItemMapping.containsKey(npcName))
+		{
+			return null;
+		}
+		HashMap<Integer, NpcDropTuple> acceptableDrops = nameItemMapping.get(npcName);
+		return itemStackCollection.stream()
+								  .map(ItemStack::getId)
+								  .map(id -> acceptableDrops.getOrDefault(id, null))
+								  .filter(Objects::nonNull)
+								  .collect(Collectors.toList());
+	}
+
+	// Process onLootReceived event bus to identify the drop source
+	private void processOnLootReceived(LootReceived lootReceived)
+	{
+		String npcName = lootReceived.getName();
+
+		if (Logic.isRaid(npcName))
+		{
+			npcName = Logic.handleRaidsType(npcName, killType.toString());
+			killType = null;
+		}
+		else if (npcName.equals("The Gauntlet"))
+		{
+			npcName = Logic.handleGauntletType(lootReceived.getItems());
+		}
+		handleLootReceived(npcName, lootReceived.getItems());
+	}
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
 	{
-		this.openGameChatbox();
-		CompletableFuture<String> screenshotUrl = this.takeScreenshot("Beans");
+		List<NpcDropTuple> dropsToSubmit = this.handleItemStackCollection(npcName, itemStackCollection);
+		if (dropsToSubmit == null || dropsToSubmit.isEmpty())
+		{
+			return;
+		}
 
+		CompletableFuture<String> screenshotUrl = this.takeScreenshot(npcName);
 		screenshotUrl.thenAccept(url -> {
 			if (url.isEmpty())
 			{
 				return;
 			}
-			var googleFormUrl = constructSubmissionUrl(url);
-			submitScreenshot(googleFormUrl);
+			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(
+				constructSubmissionUrl(url, npcDropTuple),
+				npcDropTuple.getItemName()
+			));
 		});
-
-		switch (npcName)
-		{
-			case "The Gauntlet":
-				var nonUniqueDrops = Logic.handleCorruptedGauntletDrops(itemStackCollection);
-				if (nonUniqueDrops == 4)
-				{
-					npcName = "Corrupted Gauntlet";
-				}
-				else if (nonUniqueDrops == 3)
-				{
-					npcName = "Regular Gauntlet";
-				}
-				break;
-			case "Theatre of Blood":
-			case "Chambers of Xeric":
-			case "Tombs of Amascut":
-
-		}
 	}
 
-	private String constructSubmissionUrl(String screenshotUrl)
+	private void openGameChatbox()
+	{
+		if (getChatboxId() == 1)
+		{
+			return;
+		}
+		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
+	}
+
+	private CompletableFuture<String> takeScreenshot(String npcName)
+	{
+		CompletableFuture<String> screenshotUrl = new CompletableFuture<>();
+
+		this.openGameChatbox();
+		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
+			imageCapture.processScreenshot(img, client.getLocalPlayer().getName(), npcName)));
+
+		while (getChatboxId() != 1)
+		{
+		}
+		drawManager.requestNextFrameListener(imageCallback);
+
+		return screenshotUrl;
+	}
+
+	private String constructSubmissionUrl(String screenshotUrl, NpcDropTuple npcDropTuple)
 	{
 		StringBuilder sb = new StringBuilder("https://docs.google.com/forms/d/e/");
 
@@ -214,6 +294,12 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 			sb.append("&entry.").append(key).append("=").append(value);
 		}
 
+		String npcNameEntry = config.npcNameEntry().strip();
+		sb.append("&entry.").append(npcNameEntry).append("=").append(npcDropTuple.getNpcName());
+
+		String itemNameEntry = config.itemNameEntry().strip();
+		sb.append("&entry.").append(itemNameEntry).append("=").append(npcDropTuple.getItemName());
+
 		String imageUrlEntry = config.imageEntry();
 		if (imageUrlEntry.matches("\\d*"))
 		{
@@ -228,7 +314,7 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 		return sb.toString().replaceAll("\\s", "%20");
 	}
 
-	private void submitScreenshot(String googleFormUrl)
+	private void submitScreenshot(String googleFormUrl, String itemName)
 	{
 		try
 		{
@@ -243,10 +329,11 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 													  .runeLiteFormattedMessage(message.build())
 													  .build());
 				log.info(connection.getResponseMessage());
+				log.info(googleFormUrl);
 			}
 			else
 			{
-				var message = new ChatMessageBuilder().append("Drop was submitted successfully.");
+				var message = new ChatMessageBuilder().append(String.format("Submission of %s successful.", itemName));
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
@@ -273,25 +360,9 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	private CompletableFuture<String> takeScreenshot(String itemName)
+	private int getChatboxId()
 	{
-		CompletableFuture<String> screenshotUrl = new CompletableFuture<>();
-
-		Consumer<Image> imageCallback = (img) -> executor.submit(
-			() -> screenshotUrl.complete(
-				imageCapture.processScreenshot(img, itemName, client.getLocalPlayer().getName())));
-		drawManager.requestNextFrameListener(imageCallback);
-
-		return screenshotUrl;
-	}
-
-	private void openGameChatbox()
-	{
-		if (getChatboxId() == 1)
-		{
-			return;
-		}
-		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
+		return client.getVarcIntValue(41);
 	}
 
 	private boolean isWhitelistedCharacter()
@@ -305,10 +376,5 @@ public class GoogleFormSubmitterPlugin extends Plugin implements KeyListener
 			return false;
 		}
 		return client.getLocalPlayer().getName().equalsIgnoreCase(config.accountName());
-	}
-
-	private int getChatboxId()
-	{
-		return client.getVarcIntValue(41);
 	}
 }
