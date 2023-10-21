@@ -248,10 +248,12 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
 			imageCapture.processScreenshot(img, client.getLocalPlayer().getName(), npcName)));
 
-		while (getChatboxId() != 1)
-		{
-		}
-		drawManager.requestNextFrameListener(imageCallback);
+		executor.submit(() -> {
+			while (getChatboxId() != 1)
+			{
+			}
+			drawManager.requestNextFrameListener(imageCallback);
+		});
 
 		return screenshotUrl;
 	}
@@ -356,6 +358,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 												  .type(ChatMessageType.ITEM_EXAMINE)
 												  .runeLiteFormattedMessage(message.build())
 												  .build());
+			log.info(googleFormUrl);
 			log.info(e.toString());
 		}
 	}
