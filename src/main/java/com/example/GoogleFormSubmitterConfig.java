@@ -34,7 +34,7 @@ public interface GoogleFormSubmitterConfig extends Config
 	@ConfigItem(position = 4, keyName = "entrySettings", name = "Misc Key/Value Pairs", description = "Miscellaneous Entry Key/Value Pairs")
 	default String entrySettings()
 	{
-		return "//id,name";
+		return "";
 	}
 
 	@ConfigItem(position = 5, keyName = "npcNameEntry", name = "NPC Name Entry Key", description = "NPC Entry Key")
@@ -49,7 +49,7 @@ public interface GoogleFormSubmitterConfig extends Config
 		return "";
 	}
 
-	@ConfigItem(position = 7, keyName = "itemDropMapping", name = "Drops Mapping", description = "NPC Name,Item Name,Submission NPC Name, Submission Item Name")
+	@ConfigItem(position = 7, keyName = "itemDropMapping", name = "Drops Mapping", description = "NPC Name,Item Name,Submission NPC Name,Submission Item Name")
 	default String itemDropMapping()
 	{
 		return "";

@@ -207,7 +207,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			npcName = Logic.handleGauntletType(lootReceived.getItems());
 		}
-		handleLootReceived(npcName, lootReceived.getItems());
+		this.handleLootReceived(npcName, lootReceived.getItems());
 	}
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
@@ -224,32 +224,31 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			{
 				return;
 			}
-			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(
-				constructSubmissionUrl(url, npcDropTuple),
-				npcDropTuple.getItemName()
+			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(constructSubmissionUrl(url, npcDropTuple),
+																   npcDropTuple.getItemName()
 			));
 		});
 	}
 
-	private void openGameChatbox()
+	private void openAllChatbox()
 	{
-		if (getChatboxId() == 1)
+		if (getChatboxId() == 0)
 		{
 			return;
 		}
-		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
+		clientThread.invokeLater(() -> client.runScript(175, 1, 0));
 	}
 
 	private CompletableFuture<String> takeScreenshot(String npcName)
 	{
 		CompletableFuture<String> screenshotUrl = new CompletableFuture<>();
 
-		this.openGameChatbox();
+		this.openAllChatbox();
 		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
 			imageCapture.processScreenshot(img, client.getLocalPlayer().getName(), npcName)));
 
 		executor.submit(() -> {
-			while (getChatboxId() != 1)
+			while (getChatboxId() != 0)
 			{
 			}
 			drawManager.requestNextFrameListener(imageCallback);
