@@ -1,6 +1,6 @@
 package com.example;
 
-public class NpcName
+public class NpcType
 {
 	public static final String GAUNTLET_REGULAR = "Gauntlet (Normal)";
 	public static final String GAUNTLET_CORRUPTED = "Gauntlet (Corrupted)";

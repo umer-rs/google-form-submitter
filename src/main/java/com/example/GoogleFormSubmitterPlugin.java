@@ -51,14 +51,9 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	enum KillType
-	{
-		COX, COX_CM, TOB, TOB_SM, TOB_HM, TOA, TOA_EM, TOA_XM
-	}
-
 	private ImageCapture imageCapture;
 	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
-	private KillType killType;
+	private String killType;
 
 	//<editor-fold desc="Event Bus/Config Methods">
 	@Provides
@@ -104,20 +99,21 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
 		{
-			killType = KillType.COX;
+			killType = NpcType.COX_REGULAR;
 		}
 		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
 		{
-			killType = KillType.COX_CM;
+			killType = NpcType.COX_CM;
 		}
 		if (chatMessage.startsWith("Your completed Theatre of Blood"))
 		{
-			killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : KillType.TOB;
+			killType = chatMessage.contains("Hard Mode") ? NpcType.TOB_HM : chatMessage.contains(
+				"Story Mode") ? NpcType.TOB_SM : NpcType.TOB_REGULAR;
 		}
 		if (chatMessage.startsWith("Your completed Tombs of Amascut"))
 		{
-			killType = chatMessage.contains("Expert Mode") ? KillType.TOA_XM : chatMessage.contains(
-				"Entry Mode") ? KillType.TOA_EM : KillType.TOA;
+			killType = chatMessage.contains("Expert Mode") ? NpcType.TOA_XM : chatMessage.contains(
+				"Entry Mode") ? NpcType.TOA_EM : NpcType.TOA_REGULAR;
 		}
 	}
 
@@ -200,12 +196,12 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 		if (Logic.isRaid(npcName))
 		{
-			npcName = Logic.handleRaidsType(npcName, killType.toString());
+			npcName = Logic.getRaidsType(npcName, killType);
 			killType = null;
 		}
 		else if (npcName.equals("The Gauntlet"))
 		{
-			npcName = Logic.handleGauntletType(lootReceived.getItems());
+			npcName = Logic.getGauntletType(lootReceived.getItems());
 		}
 		this.handleLootReceived(npcName, lootReceived.getItems());
 	}
