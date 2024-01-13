@@ -54,4 +54,10 @@ public interface GoogleFormSubmitterConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(position = 8, keyName = "allowSeasonalWorlds", name = "Allow Seasonal/Beta Worlds", description = "Allow drops on seasonal/beta worlds")
+	default boolean allowSeasonalWorlds()
+	{
+		return false;
+	}
 }

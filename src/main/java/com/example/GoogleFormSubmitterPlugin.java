@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -54,6 +57,10 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private ImageCapture imageCapture;
 	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
 	private String killType;
+	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
+		List.of(WorldType.BETA_WORLD, WorldType.FRESH_START_WORLD, WorldType.QUEST_SPEEDRUNNING, WorldType.SEASONAL,
+				WorldType.TOURNAMENT_WORLD
+		));
 
 	//<editor-fold desc="Event Bus/Config Methods">
 	@Provides
@@ -121,6 +128,10 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	public void onLootReceived(LootReceived lootReceived)
 	{
 		if (!isWhitelistedCharacter())
+		{
+			return;
+		}
+		if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
 		{
 			return;
 		}
@@ -220,8 +231,9 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			{
 				return;
 			}
-			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(constructSubmissionUrl(url, npcDropTuple),
-																   npcDropTuple.getItemName()
+			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(
+				constructSubmissionUrl(url, npcDropTuple),
+				npcDropTuple.getItemName()
 			));
 		});
 	}
@@ -374,5 +386,10 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			return false;
 		}
 		return client.getLocalPlayer().getName().equalsIgnoreCase(config.accountName());
+	}
+
+	private boolean isUnsuitableWorld()
+	{
+		return !Collections.disjoint(client.getWorldType(), unsuitableWorldTypes);
 	}
 }
