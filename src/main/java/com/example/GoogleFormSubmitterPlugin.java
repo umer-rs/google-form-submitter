@@ -315,15 +315,15 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			sb.append("&entry.").append(imageUrlEntry).append("=").append(screenshotUrl);
 		}
 
-//		String rsn = config.accountName().strip();
-//		if (!rsn.matches("^[a-zA-Z0-9-]{1,12}")) {
-//			notifier.notify("Whitelisted RSN is malformed");
-//			return null;
-//		}
 		return sb.toString().replaceAll("\\s", "%20");
 	}
 
 	private void submitScreenshot(String googleFormUrl, String itemName)
+	{
+		submitScreenshot(googleFormUrl, itemName, true);
+	}
+
+	private void submitScreenshot(String googleFormUrl, String itemName, boolean displayInChat)
 	{
 		try
 		{
@@ -332,30 +332,40 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			connection.setRequestMethod("GET");
 			if (connection.getResponseCode() != 200)
 			{
-				var message = new ChatMessageBuilder().append("Google Form was submitted unsuccessfully.");
-				chatMessageManager.queue(QueuedMessage.builder()
-													  .type(ChatMessageType.ITEM_EXAMINE)
-													  .runeLiteFormattedMessage(message.build())
-													  .build());
+				if (displayInChat)
+				{
+					var message = new ChatMessageBuilder().append("Google Form was submitted unsuccessfully.");
+					chatMessageManager.queue(QueuedMessage.builder()
+														  .type(ChatMessageType.ITEM_EXAMINE)
+														  .runeLiteFormattedMessage(message.build())
+														  .build());
+				}
 				log.info(connection.getResponseMessage());
 				log.info(googleFormUrl);
 			}
 			else
 			{
-				var message = new ChatMessageBuilder().append(String.format("Submission of %s successful.", itemName));
+				if (displayInChat)
+				{
+					var message = new ChatMessageBuilder().append(
+						String.format("Submission of %s successful.", itemName));
+					chatMessageManager.queue(QueuedMessage.builder()
+														  .type(ChatMessageType.ITEM_EXAMINE)
+														  .runeLiteFormattedMessage(message.build())
+														  .build());
+				}
+			}
+		}
+		catch (MalformedURLException e)
+		{
+			if (displayInChat)
+			{
+				var message = new ChatMessageBuilder().append("The URL constructed was invalid.");
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
 													  .build());
 			}
-		}
-		catch (MalformedURLException e)
-		{
-			var message = new ChatMessageBuilder().append("The URL constructed was invalid.");
-			chatMessageManager.queue(QueuedMessage.builder()
-												  .type(ChatMessageType.ITEM_EXAMINE)
-												  .runeLiteFormattedMessage(message.build())
-												  .build());
 			log.info(googleFormUrl);
 		}
 		catch (IOException e)
