@@ -55,6 +55,20 @@ public class Logic
 				ItemID.CLUE_SCROLL_ELITE_25499, ItemID.CLUE_SCROLL_ELITE_25786, ItemID.CLUE_SCROLL_ELITE_25787,
 				ItemID.CLUE_SCROLL_ELITE_26943, ItemID.CLUE_SCROLL_ELITE_26944
 		));
+	
+	static String getGauntletType(Collection<ItemStack> itemStackCollection)
+	{
+		var nonUniqueDrops = Logic.handleCorruptedGauntletDrops(itemStackCollection);
+		if (nonUniqueDrops == 2)
+		{
+			return NpcType.GAUNTLET_REGULAR;
+		}
+		if (nonUniqueDrops == 3)
+		{
+			return NpcType.GAUNTLET_CORRUPTED;
+		}
+		return NpcType.GAUNTLET_DIED;
+	}
 
 	private static int handleCorruptedGauntletDrops(Collection<ItemStack> itemStackCollection)
 	{
@@ -62,24 +76,15 @@ public class Logic
 		return itemStackCollection.size();
 	}
 
-	static String handleGauntletType(Collection<ItemStack> itemStackCollection)
-	{
-		var nonUniqueDrops = Logic.handleCorruptedGauntletDrops(itemStackCollection);
-		if (nonUniqueDrops == 2)
-		{
-			return "Gauntlet (Normal)";
-		}
-		if (nonUniqueDrops == 3)
-		{
-			return "Gauntlet (Corrupted)";
-		}
-		return "Gauntlet (Died)";
-	}
-
 	private static final HashSet<String> raidsNameSet = new HashSet<>(
 		List.of("Chambers of Xeric", "Theatre of Blood", "Tombs of Amascut"));
 
-	static String handleRaidsType(String npcName, String killType)
+	static boolean isRaid(String npcName)
+	{
+		return raidsNameSet.contains(npcName);
+	}
+
+	static String getRaidsType(String npcName, String killType)
 	{
 		switch (npcName)
 		{
@@ -94,43 +99,38 @@ public class Logic
 		}
 	}
 
-	static boolean isRaid(String npcName)
-	{
-		return raidsNameSet.contains(npcName);
-	}
-
 	private static String handleChambers(String killType)
 	{
-		if (killType.equals("COX_CM"))
+		if (killType.equals(NpcType.COX_CM))
 		{
-			return "Chambers of Xeric (CM)";
+			return NpcType.COX_CM;
 		}
-		return "Chambers of Xeric";
+		return NpcType.COX_REGULAR;
 	}
 
 	private static String handleTob(String killType)
 	{
-		if (killType.equals("TOB_SM"))
+		if (killType.equals(NpcType.TOB_SM))
 		{
-			return "Theatre of Blood (SM)";
+			return NpcType.TOB_SM;
 		}
-		if (killType.equals("TOB_HM"))
+		if (killType.equals(NpcType.TOB_HM))
 		{
-			return "Theatre of Blood (HM)";
+			return NpcType.TOB_HM;
 		}
-		return "Theatre of Blood";
+		return NpcType.TOB_REGULAR;
 	}
 
 	private static String handleToa(String killType)
 	{
-		if (killType.equals("TOA_EM"))
+		if (killType.equals(NpcType.TOA_EM))
 		{
-			return "Tombs of Amascut (EM)";
+			return NpcType.TOA_EM;
 		}
-		if (killType.equals("TOA_XM"))
+		if (killType.equals(NpcType.TOA_XM))
 		{
-			return "Tombs of Amascut (XM)";
+			return NpcType.TOA_XM;
 		}
-		return "Tombs of Amascut";
+		return NpcType.TOA_REGULAR;
 	}
 }

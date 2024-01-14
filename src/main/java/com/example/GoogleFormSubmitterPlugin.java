@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -51,14 +54,13 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executor;
 
-	enum KillType
-	{
-		COX, COX_CM, TOB, TOB_SM, TOB_HM, TOA, TOA_EM, TOA_XM
-	}
-
 	private ImageCapture imageCapture;
 	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
-	private KillType killType;
+	private String killType;
+	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
+		List.of(WorldType.BETA_WORLD, WorldType.FRESH_START_WORLD, WorldType.QUEST_SPEEDRUNNING, WorldType.SEASONAL,
+				WorldType.TOURNAMENT_WORLD
+		));
 
 	//<editor-fold desc="Event Bus/Config Methods">
 	@Provides
@@ -104,20 +106,21 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 		if (chatMessage.startsWith("Your completed Chambers of Xeric count is:"))
 		{
-			killType = KillType.COX;
+			killType = NpcType.COX_REGULAR;
 		}
 		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
 		{
-			killType = KillType.COX_CM;
+			killType = NpcType.COX_CM;
 		}
 		if (chatMessage.startsWith("Your completed Theatre of Blood"))
 		{
-			killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : KillType.TOB;
+			killType = chatMessage.contains("Hard Mode") ? NpcType.TOB_HM : chatMessage.contains(
+				"Story Mode") ? NpcType.TOB_SM : NpcType.TOB_REGULAR;
 		}
 		if (chatMessage.startsWith("Your completed Tombs of Amascut"))
 		{
-			killType = chatMessage.contains("Expert Mode") ? KillType.TOA_XM : chatMessage.contains(
-				"Entry Mode") ? KillType.TOA_EM : KillType.TOA;
+			killType = chatMessage.contains("Expert Mode") ? NpcType.TOA_XM : chatMessage.contains(
+				"Entry Mode") ? NpcType.TOA_EM : NpcType.TOA_REGULAR;
 		}
 	}
 
@@ -125,6 +128,10 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	public void onLootReceived(LootReceived lootReceived)
 	{
 		if (!isWhitelistedCharacter())
+		{
+			return;
+		}
+		if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
 		{
 			return;
 		}
@@ -200,14 +207,14 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 		if (Logic.isRaid(npcName))
 		{
-			npcName = Logic.handleRaidsType(npcName, killType.toString());
+			npcName = Logic.getRaidsType(npcName, killType);
 			killType = null;
 		}
 		else if (npcName.equals("The Gauntlet"))
 		{
-			npcName = Logic.handleGauntletType(lootReceived.getItems());
+			npcName = Logic.getGauntletType(lootReceived.getItems());
 		}
-		handleLootReceived(npcName, lootReceived.getItems());
+		this.handleLootReceived(npcName, lootReceived.getItems());
 	}
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
@@ -231,25 +238,25 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		});
 	}
 
-	private void openGameChatbox()
+	private void openAllChatbox()
 	{
-		if (getChatboxId() == 1)
+		if (getChatboxId() == 0)
 		{
 			return;
 		}
-		clientThread.invokeLater(() -> client.runScript(175, 1, 1));
+		clientThread.invokeLater(() -> client.runScript(175, 1, 0));
 	}
 
 	private CompletableFuture<String> takeScreenshot(String npcName)
 	{
 		CompletableFuture<String> screenshotUrl = new CompletableFuture<>();
 
-		this.openGameChatbox();
+		this.openAllChatbox();
 		Consumer<Image> imageCallback = (img) -> executor.submit(() -> screenshotUrl.complete(
 			imageCapture.processScreenshot(img, client.getLocalPlayer().getName(), npcName)));
 
 		executor.submit(() -> {
-			while (getChatboxId() != 1)
+			while (getChatboxId() != 0)
 			{
 			}
 			drawManager.requestNextFrameListener(imageCallback);
@@ -308,15 +315,15 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			sb.append("&entry.").append(imageUrlEntry).append("=").append(screenshotUrl);
 		}
 
-//		String rsn = config.accountName().strip();
-//		if (!rsn.matches("^[a-zA-Z0-9-]{1,12}")) {
-//			notifier.notify("Whitelisted RSN is malformed");
-//			return null;
-//		}
 		return sb.toString().replaceAll("\\s", "%20");
 	}
 
 	private void submitScreenshot(String googleFormUrl, String itemName)
+	{
+		submitScreenshot(googleFormUrl, itemName, true);
+	}
+
+	private void submitScreenshot(String googleFormUrl, String itemName, boolean displayInChat)
 	{
 		try
 		{
@@ -325,30 +332,40 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			connection.setRequestMethod("GET");
 			if (connection.getResponseCode() != 200)
 			{
-				var message = new ChatMessageBuilder().append("Google Form was submitted unsuccessfully.");
-				chatMessageManager.queue(QueuedMessage.builder()
-													  .type(ChatMessageType.ITEM_EXAMINE)
-													  .runeLiteFormattedMessage(message.build())
-													  .build());
+				if (displayInChat)
+				{
+					var message = new ChatMessageBuilder().append("Google Form was submitted unsuccessfully.");
+					chatMessageManager.queue(QueuedMessage.builder()
+														  .type(ChatMessageType.ITEM_EXAMINE)
+														  .runeLiteFormattedMessage(message.build())
+														  .build());
+				}
 				log.info(connection.getResponseMessage());
 				log.info(googleFormUrl);
 			}
 			else
 			{
-				var message = new ChatMessageBuilder().append(String.format("Submission of %s successful.", itemName));
+				if (displayInChat)
+				{
+					var message = new ChatMessageBuilder().append(
+						String.format("Submission of %s successful.", itemName));
+					chatMessageManager.queue(QueuedMessage.builder()
+														  .type(ChatMessageType.ITEM_EXAMINE)
+														  .runeLiteFormattedMessage(message.build())
+														  .build());
+				}
+			}
+		}
+		catch (MalformedURLException e)
+		{
+			if (displayInChat)
+			{
+				var message = new ChatMessageBuilder().append("The URL constructed was invalid.");
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
 													  .build());
 			}
-		}
-		catch (MalformedURLException e)
-		{
-			var message = new ChatMessageBuilder().append("The URL constructed was invalid.");
-			chatMessageManager.queue(QueuedMessage.builder()
-												  .type(ChatMessageType.ITEM_EXAMINE)
-												  .runeLiteFormattedMessage(message.build())
-												  .build());
 			log.info(googleFormUrl);
 		}
 		catch (IOException e)
@@ -379,5 +396,10 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			return false;
 		}
 		return client.getLocalPlayer().getName().equalsIgnoreCase(config.accountName());
+	}
+
+	private boolean isUnsuitableWorld()
+	{
+		return !Collections.disjoint(client.getWorldType(), unsuitableWorldTypes);
 	}
 }
