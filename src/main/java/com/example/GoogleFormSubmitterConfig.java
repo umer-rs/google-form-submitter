@@ -49,19 +49,25 @@ public interface GoogleFormSubmitterConfig extends Config
 		return "";
 	}
 
-	@ConfigItem(position = 7, keyName = "allowSeasonalWorlds", name = "Allow Seasonal/Beta Worlds", description = "Allow drops on seasonal/beta worlds")
+	@ConfigItem(position = 7, keyName = "soloChambersEntry", name = "Solo Chambers Entry Key", description = "Entry to use for Solo Chambers")
+	default String soloChambersEntry()
+	{
+		return "";
+	}
+
+	@ConfigItem(position = 8, keyName = "allowSeasonalWorlds", name = "Allow Seasonal/Beta Worlds", description = "Allow drops on seasonal/beta worlds")
 	default boolean allowSeasonalWorlds()
 	{
 		return false;
 	}
 
-	@ConfigItem(position = 8, keyName = "dropMappingUrl", name = "Drop Mapping URL", description = "URL of a drop mapping")
+	@ConfigItem(position = 9, keyName = "dropMappingUrl", name = "Drop Mapping URL", description = "URL of a drop mapping")
 	default String dropMappingUrl()
 	{
 		return "";
 	}
 
-	@ConfigItem(position = 9, keyName = "itemDropMapping", name = "Drops Mapping", description = "NPC Name,Item Name,Submission NPC Name,Submission Item Name")
+	@ConfigItem(position = 10, keyName = "itemDropMapping", name = "Drop Mapping", description = "NPC Name,Item Name,Submission NPC Name,Submission Item Name")
 	default String itemDropMapping()
 	{
 		return "";

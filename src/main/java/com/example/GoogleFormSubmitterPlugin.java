@@ -15,13 +15,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
@@ -159,14 +163,15 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			return;
 		}
-		handleLootReceived(npcName, lootReceived);
+		this.handleLootReceived(npcName, lootReceived);
 	}
 	//</editor-fold>
 
 	private void updateNameItemMapping() throws NumberFormatException
 	{
 		String rawConfig;
-		if ((rawConfig = getMappingResource(config.dropMappingUrl())) == null) {
+		if ((rawConfig = getMappingResource(config.dropMappingUrl())) == null)
+		{
 			rawConfig = config.itemDropMapping();
 		}
 		rawConfig = rawConfig.replaceAll("\\s*,\\s*", ",");
@@ -238,7 +243,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 				return;
 			}
 			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(
-				constructSubmissionUrl(url, npcDropTuple),
+				this.constructSubmissionUrl(url, npcDropTuple),
 				npcDropTuple.getItemName()
 			));
 		});
@@ -321,6 +326,15 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			sb.append("&entry.").append(imageUrlEntry).append("=").append(screenshotUrl);
 		}
 
+		String soloChambersEntry = config.soloChambersEntry();
+		if (!soloChambersEntry.isEmpty() && this.getCoXPartySize() == 1)
+		{
+			sb.append("&entry.")
+			  .append(soloChambersEntry)
+			  .append("=")
+			  .append("Yes,+I+completed+Nightmare+or+a+raid+all+by+myself+and+received+the+drop+above.");
+		}
+
 		return sb.toString().replaceAll("\\s", "%20");
 	}
 
@@ -388,7 +402,8 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private String getMappingResource(String mappingUrl)
 	{
-		if (mappingUrl.isEmpty()) {
+		if (mappingUrl.isEmpty())
+		{
 			return null;
 		}
 		try
@@ -407,13 +422,30 @@ public class GoogleFormSubmitterPlugin extends Plugin
 				log.info(mappingUrl);
 				return null;
 			}
-			return new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining("\n"));
+			return new BufferedReader(new InputStreamReader(connection.getInputStream())).lines()
+																						 .collect(
+																							 Collectors.joining("\n"));
 		}
 		catch (Exception e)
 		{
 			log.info(String.valueOf(e));
 			return null;
 		}
+	}
+
+	private int getCoXPartySize()
+	{
+		CompletableFuture<Integer> raidPartySize = new CompletableFuture<>();
+		clientThread.invoke(() -> raidPartySize.complete(client.getVarbitValue(9540)));
+		try
+		{
+			return Math.max(0, raidPartySize.get(1, TimeUnit.SECONDS));
+		}
+		catch (Exception e)
+		{
+			return 0;
+		}
+
 	}
 
 	private int getChatboxId()
