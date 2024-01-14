@@ -7,7 +7,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("googleformsubmitter")
 public interface GoogleFormSubmitterConfig extends Config
 {
-	@ConfigItem(position = 0, keyName = "accountName", name = "Whitelisted RSN", description = "The account to submit drops from. This is not used for the actual submission link.")
+	@ConfigItem(position = 0, keyName = "accountName", name = "Whitelisted RSN", description = "The account to submit drops from. This is not used for the actual submission.")
 	default String accountName()
 	{
 		return "";
@@ -25,39 +25,45 @@ public interface GoogleFormSubmitterConfig extends Config
 		return "";
 	}
 
-	@ConfigItem(position = 3, keyName = "imageEntry", name = "Image Entry Key", description = "Entry to use for drop image")
-	default String imageEntry()
-	{
-		return "";
-	}
-
-	@ConfigItem(position = 4, keyName = "entrySettings", name = "Misc Key/Value Pairs", description = "Miscellaneous Entry Key/Value Pairs")
+	@ConfigItem(position = 3, keyName = "entrySettings", name = "Misc Key/Value Pairs", description = "Miscellaneous Entry Key/Value Pairs")
 	default String entrySettings()
 	{
 		return "";
 	}
 
-	@ConfigItem(position = 5, keyName = "npcNameEntry", name = "NPC Name Entry Key", description = "NPC Entry Key")
+	@ConfigItem(position = 4, keyName = "npcNameEntry", name = "NPC Name Entry Key", description = "NPC Entry Key")
 	default String npcNameEntry()
 	{
 		return "";
 	}
 
-	@ConfigItem(position = 6, keyName = "itemNameEntry", name = "Item Name Entry Key", description = "Item Entry Key")
+	@ConfigItem(position = 5, keyName = "itemNameEntry", name = "Item Name Entry Key", description = "Item Entry Key")
 	default String itemNameEntry()
 	{
 		return "";
 	}
 
-	@ConfigItem(position = 7, keyName = "itemDropMapping", name = "Drops Mapping", description = "NPC Name,Item Name,Submission NPC Name,Submission Item Name")
-	default String itemDropMapping()
+	@ConfigItem(position = 6, keyName = "imageEntry", name = "Image Entry Key", description = "Entry to use for drop image")
+	default String imageEntry()
 	{
 		return "";
 	}
 
-	@ConfigItem(position = 8, keyName = "allowSeasonalWorlds", name = "Allow Seasonal/Beta Worlds", description = "Allow drops on seasonal/beta worlds")
+	@ConfigItem(position = 7, keyName = "allowSeasonalWorlds", name = "Allow Seasonal/Beta Worlds", description = "Allow drops on seasonal/beta worlds")
 	default boolean allowSeasonalWorlds()
 	{
 		return false;
+	}
+
+	@ConfigItem(position = 8, keyName = "dropMappingUrl", name = "Drop Mapping URL", description = "URL of a drop mapping")
+	default String dropMappingUrl()
+	{
+		return "";
+	}
+
+	@ConfigItem(position = 9, keyName = "itemDropMapping", name = "Drops Mapping", description = "NPC Name,Item Name,Submission NPC Name,Submission Item Name")
+	default String itemDropMapping()
+	{
+		return "";
 	}
 }

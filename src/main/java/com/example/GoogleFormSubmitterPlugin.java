@@ -2,7 +2,9 @@ package com.example;
 
 import com.google.inject.Provides;
 import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -84,9 +86,9 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			return;
 		}
-		if (configChanged.getKey().equals("itemDropMapping"))
+		if (configChanged.getKey().equals("itemDropMapping") || configChanged.getKey().equals("dropMappingUrl"))
 		{
-			updateNameItemMapping();
+			this.updateNameItemMapping();
 		}
 		else if (configChanged.getKey().equals("ibbApiKey"))
 		{
@@ -163,7 +165,11 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private void updateNameItemMapping() throws NumberFormatException
 	{
-		String rawConfig = config.itemDropMapping().replaceAll("\\s*,\\s*", ",");
+		String rawConfig;
+		if ((rawConfig = getMappingResource(config.dropMappingUrl())) == null) {
+			rawConfig = config.itemDropMapping();
+		}
+		rawConfig = rawConfig.replaceAll("\\s*,\\s*", ",");
 		String[] rows = rawConfig.split("\n");
 		HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping = new HashMap<>();
 		for (String row : rows)
@@ -377,6 +383,36 @@ public class GoogleFormSubmitterPlugin extends Plugin
 												  .build());
 			log.info(googleFormUrl);
 			log.info(e.toString());
+		}
+	}
+
+	private String getMappingResource(String mappingUrl)
+	{
+		if (mappingUrl.isEmpty()) {
+			return null;
+		}
+		try
+		{
+			var url = new URL(mappingUrl);
+			var connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			if (connection.getResponseCode() != 200)
+			{
+				var message = new ChatMessageBuilder().append("Mapping retrieval unsuccessful.");
+				chatMessageManager.queue(QueuedMessage.builder()
+													  .type(ChatMessageType.ITEM_EXAMINE)
+													  .runeLiteFormattedMessage(message.build())
+													  .build());
+				log.info(connection.getResponseMessage());
+				log.info(mappingUrl);
+				return null;
+			}
+			return new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining("\n"));
+		}
+		catch (Exception e)
+		{
+			log.info(String.valueOf(e));
+			return null;
 		}
 	}
 
