@@ -77,7 +77,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		this.updateNameItemMapping();
-		this.imageCapture = new ImageCapture(config.ibbApiKey());
+		this.imageCapture.updateApiKey(config.ibbApiKey());
 		this.killType = null;
 	}
 
