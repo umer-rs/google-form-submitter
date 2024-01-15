@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
 import lombok.Data;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.util.ImageUtil;
@@ -28,15 +29,17 @@ public class ImageCapture
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	private static final String IBB_IMAGE_UPLOAD_URL = "https://api.imgbb.com/1/upload?key=";
 
-	private final OkHttpClient okHttpClient;
-	private final Gson gson;
+	@Inject
+	private OkHttpClient okHttpClient;
+	@Inject
+	private Gson gson;
 	private HttpUrl ibbImageUploadUrl;
 
+	@Inject
 	ImageCapture(final String ibbApiKey)
 	{
-		this.okHttpClient = new OkHttpClient();
-		this.gson = new Gson();
 		this.ibbImageUploadUrl = HttpUrl.get(IBB_IMAGE_UPLOAD_URL + ibbApiKey);
+
 	}
 
 	String processScreenshot(Image img, String playerName, String suffix)

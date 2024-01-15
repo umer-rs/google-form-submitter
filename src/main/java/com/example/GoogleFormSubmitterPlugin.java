@@ -15,17 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.callback.ClientThread;
@@ -59,8 +56,9 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private DrawManager drawManager;
 	@Inject
 	private ScheduledExecutorService executor;
-
+	@Inject
 	private ImageCapture imageCapture;
+
 	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
 	private String killType;
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
@@ -79,7 +77,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		this.updateNameItemMapping();
-		this.imageCapture = new ImageCapture(config.ibbApiKey());
+		this.imageCapture.updateApiKey(config.ibbApiKey());
 		this.killType = null;
 	}
 
