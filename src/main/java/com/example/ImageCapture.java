@@ -35,9 +35,11 @@ public class ImageCapture
 	private Gson gson;
 	private HttpUrl ibbImageUploadUrl;
 
+	@Inject
 	ImageCapture(final String ibbApiKey)
 	{
 		this.ibbImageUploadUrl = HttpUrl.get(IBB_IMAGE_UPLOAD_URL + ibbApiKey);
+
 	}
 
 	String processScreenshot(Image img, String playerName, String suffix)

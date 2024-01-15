@@ -56,8 +56,9 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private DrawManager drawManager;
 	@Inject
 	private ScheduledExecutorService executor;
-
+	@Inject
 	private ImageCapture imageCapture;
+
 	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
 	private String killType;
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
