@@ -131,14 +131,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Subscribe
 	public void onLootReceived(LootReceived lootReceived)
 	{
-		if (!isWhitelistedCharacter())
-		{
-			return;
-		}
-		if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
-		{
-			return;
-		}
 		if (lootReceived.getType() == LootRecordType.NPC)
 		{
 			return;
@@ -151,11 +143,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	{
 		var npc = npcLootReceived.getNpc();
 		var lootReceived = npcLootReceived.getItems();
-		if (!isWhitelistedCharacter())
-		{
-			return;
-		}
-
 		var npcName = npc.getName();
 		if (npcName == null)
 		{
@@ -228,6 +215,19 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
 	{
+        if (config.ibbApiKey().isBlank())
+        {
+            return;
+        }
+        if (!isWhitelistedCharacter())
+        {
+            return;
+        }
+        if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
+        {
+            return;
+        }
+
 		List<NpcDropTuple> dropsToSubmit = this.handleItemStackCollection(npcName, itemStackCollection);
 		if (dropsToSubmit == null || dropsToSubmit.isEmpty())
 		{

@@ -19,7 +19,7 @@ public interface GoogleFormSubmitterConfig extends Config
 		return "";
 	}
 
-	@ConfigItem(position = 2, keyName = "ibbApiKey", name = "IBB Api Key", description = "api.imgbb.com")
+	@ConfigItem(position = 2, keyName = "ibbApiKey", name = "IBB Api Key", description = "Obtain one at api.imgbb.com. Plugin will not function without this field filled in.")
 	default String ibbApiKey()
 	{
 		return "";
