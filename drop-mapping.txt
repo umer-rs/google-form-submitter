@@ -60,11 +60,6 @@ Thermonuclear smoke devil,25524,Thermonuclear smoke devil,Jar of smoke
 Kraken,11905,Kraken,Trident of the seas (full)
 Kraken,12004,Kraken,Kraken tentacle (Kraken)
 Kraken,12007,Kraken,Jar of dirt
-Unsired,13265,Abyssal Sire,Abyssal dagger (Abyssal Sire)
-Unsired,4151,Abyssal Sire,Abyssal whip (Abyssal Sire)
-Unsired,3140,Abyssal Sire,Abyssal head (Abyssal Sire)
-Unsired,13263,Abyssal Sire,Bludgeon piece
-Unsired,13277,Abyssal Sire,Jar of miasma
 Demonic Gorilla,19529,Demonic Gorilla,Zenyte shard (Demonic gorilla)
 Chambers of Xeric,21003,Chambers of Xeric,Elder maul
 Chambers of Xeric,20997,Chambers of Xeric,Twisted bow
