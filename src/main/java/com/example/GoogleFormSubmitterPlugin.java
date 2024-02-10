@@ -111,7 +111,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			killType = NpcType.COX_REGULAR;
 		}
-		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode " + "count is:"))
+		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
 		{
 			killType = NpcType.COX_CM;
 		}
@@ -297,7 +297,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			var keyValueArray = keyValueString.split(",");
 			if (keyValueArray.length != 2)
 			{
-				var message = new ChatMessageBuilder().append("Key/Value pairs are " + "malformed");
+				var message = new ChatMessageBuilder().append("Key/Value pairs are malformed");
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
@@ -327,8 +327,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			sb.append("&entry.")
 			  .append(soloChambersEntry)
 			  .append("=")
-			  .append(
-				  "Yes," + "+I+completed+Nightmare+or+a+raid" + "+all+by+myself+and+received+the" + "+drop" + "+above" + ".");
+			  .append("Yes,+I+completed+Nightmare+or+a+raid+all+by+myself+and+received+the+drop+above.");
 		}
 
 		return sb.toString().replaceAll("\\s", "%20");
@@ -350,7 +349,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			{
 				if (displayInChat)
 				{
-					var message = new ChatMessageBuilder().append("Google Form was " + "submitted unsuccessfully.");
+					var message = new ChatMessageBuilder().append("Google Form was submitted unsuccessfully.");
 					chatMessageManager.queue(QueuedMessage.builder()
 														  .type(ChatMessageType.ITEM_EXAMINE)
 														  .runeLiteFormattedMessage(message.build())
@@ -376,7 +375,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			if (displayInChat)
 			{
-				var message = new ChatMessageBuilder().append("The URL constructed was " + "invalid.");
+				var message = new ChatMessageBuilder().append("The URL constructed was invalid.");
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
@@ -387,7 +386,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		catch (IOException e)
 		{
 			var message = new ChatMessageBuilder().append(
-				"There was an issue with the " + "connection to the Google" + " " + "Form.");
+				"There was an issue with the connection to the Google Form" + ".");
 			chatMessageManager.queue(QueuedMessage.builder()
 												  .type(ChatMessageType.ITEM_EXAMINE)
 												  .runeLiteFormattedMessage(message.build())
@@ -410,7 +409,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			connection.setRequestMethod("GET");
 			if (connection.getResponseCode() != 200)
 			{
-				var message = new ChatMessageBuilder().append("Mapping retrieval " + "unsuccessful.");
+				var message = new ChatMessageBuilder().append("Mapping retrieval unsuccessful.");
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
