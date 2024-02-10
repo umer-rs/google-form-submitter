@@ -64,8 +64,7 @@ public class ImageCapture
 		RequestBody imageRequestBody = RequestBody.create(MediaType.parse("image/*"), screenshotFile);
 		RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
 															 .addFormDataPart("image", screenshotFile.getName(),
-																			  imageRequestBody
-															 )
+																			  imageRequestBody)
 															 .build();
 		Request request = new Request.Builder().url(this.ibbImageUploadUrl).post(requestBody).build();
 
