@@ -73,6 +73,20 @@ Chambers of Xeric,21012,Chambers of Xeric,Dragon hunter crossbow
 Chambers of Xeric,21000,Chambers of Xeric,Twisted buckler
 Chambers of Xeric,21034,Chambers of Xeric,Dexterous prayer scroll
 Chambers of Xeric,21079,Chambers of Xeric,Arcane prayer scroll
+Chambers of Xeric (CM),21003,Chambers of Xeric (CM),Elder maul
+Chambers of Xeric (CM),20997,Chambers of Xeric (CM),Twisted bow
+Chambers of Xeric (CM),21006,Chambers of Xeric (CM),Kodai insignia
+Chambers of Xeric (CM),13652,Chambers of Xeric (CM),Dragon claws
+Chambers of Xeric (CM),21018,Chambers of Xeric (CM),Ancestral hat
+Chambers of Xeric (CM),21021,Chambers of Xeric (CM),Ancestral robe top
+Chambers of Xeric (CM),21024,Chambers of Xeric (CM),Ancestral robe bottom
+Chambers of Xeric (CM),21015,Chambers of Xeric (CM),Dinh's bulwark
+Chambers of Xeric (CM),21012,Chambers of Xeric (CM),Dragon hunter crossbow
+Chambers of Xeric (CM),21000,Chambers of Xeric (CM),Twisted buckler
+Chambers of Xeric (CM),21034,Chambers of Xeric (CM),Dexterous prayer scroll
+Chambers of Xeric (CM),21079,Chambers of Xeric (CM),Arcane prayer scroll
+Chambers of Xeric (CM),24670,Chambers of Xeric (CM),Twisted kit
+Chambers of Xeric (CM),22386,Chambers of Xeric (CM),Metamorphic dust
 Vorkath,22111,Vorkath,Dragonbone necklace
 Vorkath,11286,Vorkath,Draconic visage (Vorkath)
 Vorkath,22003,Vorkath,Skeletal visage
@@ -89,6 +103,16 @@ Theatre of Blood,22477,Theatre of Blood,Avernic defender hilt
 Theatre of Blood,22326,Theatre of Blood,Justiciar faceguard
 Theatre of Blood,22327,Theatre of Blood,Justiciar chestguard
 Theatre of Blood,22328,Theatre of Blood,Justiciar legguards
+Theatre of Blood (HM),22486,Theatre of Blood (HM),Scythe of vitur (uncharged) (hm)
+Theatre of Blood (HM),22481,Theatre of Blood (HM),Sanguinesti staff (uncharged) (hm)
+Theatre of Blood (HM),22324,Theatre of Blood (HM),Ghrazi rapier (hm)
+Theatre of Blood (HM),22477,Theatre of Blood (HM),Avernic defender hilt (hm)
+Theatre of Blood (HM),22326,Theatre of Blood (HM),Justiciar faceguard (hm)
+Theatre of Blood (HM),22327,Theatre of Blood (HM),Justiciar chestguard (hm)
+Theatre of Blood (HM),22328,Theatre of Blood (HM),Justiciar legguards (hm)
+Theatre of Blood (HM),25742,Theatre of Blood (HM),Holy ornament kit
+Theatre of Blood (HM),25744,Theatre of Blood (HM),Sanguine ornament kit
+Theatre of Blood (HM),25746,Theatre of Blood (HM),Sanguine dust
 Alchemical Hydra,22975,Alchemical Hydra,Brimstone ring piece (Alchemical Hydra)
 Alchemical Hydra,22988,Alchemical Hydra,Hydra tail (Alchemical Hydra)
 Alchemical Hydra,22978,Alchemical Hydra,Hydra's claw
@@ -111,18 +135,6 @@ Nightmare of Ashihama,24517,Nightmare of Ashihama,Eldritch orb
 Nightmare of Ashihama,24514,Nightmare of Ashihama,Volatile orb
 Nightmare of Ashihama,24511,Nightmare of Ashihama,Harmonised orb
 Nightmare of Ashihama,24495,Nightmare of Ashihama,Jar of dreams
-Chambers of Xeric (CM),24670,Chambers of Xeric (CM),Twisted kit
-Chambers of Xeric (CM),22386,Chambers of Xeric (CM),Metamorphic dust
-Theatre of Blood (HM),22486,Theatre of Blood (HM),Scythe of vitur (uncharged) (hm)
-Theatre of Blood (HM),22481,Theatre of Blood (HM),Sanguinesti staff (uncharged) (hm)
-Theatre of Blood (HM),22324,Theatre of Blood (HM),Ghrazi rapier (hm)
-Theatre of Blood (HM),22477,Theatre of Blood (HM),Avernic defender hilt (hm)
-Theatre of Blood (HM),22326,Theatre of Blood (HM),Justiciar faceguard (hm)
-Theatre of Blood (HM),22327,Theatre of Blood (HM),Justiciar chestguard (hm)
-Theatre of Blood (HM),22328,Theatre of Blood (HM),Justiciar legguards (hm)
-Theatre of Blood (HM),25742,Theatre of Blood (HM),Holy ornament kit
-Theatre of Blood (HM),25744,Theatre of Blood (HM),Sanguine ornament kit
-Theatre of Blood (HM),25746,Theatre of Blood (HM),Sanguine dust
 Phosani's Nightmare,24422,Phosani's Nightmare,Phosani's Nightmare staff
 Phosani's Nightmare,24419,Phosani's Nightmare,Phosani's Inquisitor's great helm
 Phosani's Nightmare,24420,Phosani's Nightmare,Phosani's Inquisitor's hauberk
