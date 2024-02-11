@@ -149,9 +149,9 @@ Phosani's Nightmare,24495,Phosani's Nightmare,Phosani's Jar of dreams
 Phosani's Nightmare,25838,Phosani's Nightmare,Parasitic egg
 Nex,26235,Nex,Zaryte vambraces
 Nex,26372,Nex,Nihil horn
-Nex,26382,Nex,Torva full helm (damaged)
-Nex,26384,Nex,Torva platebody (damaged)
-Nex,26386,Nex,Torva platelegs (damaged)
+Nex,26376,Nex,Torva full helm (damaged)
+Nex,26378,Nex,Torva platebody (damaged)
+Nex,26380,Nex,Torva platelegs (damaged)
 Nex,26370,Nex,Ancient hilt
 Tombs of Amascut,27277,Tombs of Amascut,Tumeken's shadow (uncharged)
 Tombs of Amascut (XM),27277,Tombs of Amascut,Tumeken's shadow (uncharged)
