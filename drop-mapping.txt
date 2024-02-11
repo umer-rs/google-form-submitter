@@ -180,22 +180,22 @@ Leviathan,26243,Leviathan,Virtus robe top (Leviathan)
 Leviathan,26245,Leviathan,Virtus robe bottom (Leviathan)
 Leviathan,28276,Leviathan,Chromium ingot (Leviathan)
 Leviathan,28338,Leviathan,Leviathan's lure
-Leviathan,28310,Leviathan,Venator vestige
+Leviathan,28283,Leviathan,Venator vestige
 Whisperer,26241,Whisperer,Virtus mask (Whisperer)
 Whisperer,26243,Whisperer,Virtus robe top (Whisperer)
 Whisperer,26245,Whisperer,Virtus robe bottom (Whisperer)
 Whisperer,28276,Whisperer,Chromium ingot (Whisperer)
 Whisperer,28323,Whisperer,Siren's staff
-Whisperer,28316,Whisperer,Bellator vestige
+Whisperer,28279,Whisperer,Bellator vestige
 Vardorvis,26241,Vardorvis,Virtus mask (Vardorvis)
 Vardorvis,26243,Vardorvis,Virtus robe top (Vardorvis)
 Vardorvis,26245,Vardorvis,Virtus robe bottom (Vardorvis)
 Vardorvis,28276,Vardorvis,Chromium ingot (Vardorvis)
 Vardorvis,28319,Vardorvis,Executioner's axe head
-Vardorvis,28307,Vardorvis,Ultor vestige
+Vardorvis,28285,Vardorvis,Ultor vestige
 Duke Sucellus,26241,Duke Sucellus,Virtus mask (Duke Sucellus)
 Duke Sucellus,26243,Duke Sucellus,Virtus robe top (Duke Sucellus)
 Duke Sucellus,26245,Duke Sucellus,Virtus robe bottom (Duke Sucellus)
 Duke Sucellus,28276,Duke Sucellus,Chromium ingot (Duke Sucellus)
 Duke Sucellus,28321,Duke Sucellus,Eye of the duke
-Duke Sucellus,28313,Duke Sucellus,Magus vestige
+Duke Sucellus,28281,Duke Sucellus,Magus vestige
