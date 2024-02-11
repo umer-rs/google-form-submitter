@@ -69,10 +69,9 @@ public class Logic
 		return NpcType.GAUNTLET_DIED;
 	}
 
-	private static int handleCorruptedGauntletDrops(Collection<ItemStack> itemStackCollection)
+	private static long handleCorruptedGauntletDrops(Collection<ItemStack> itemStackCollection)
 	{
-		itemStackCollection.removeIf(e -> corruptedGauntletDrops.contains(e.getId()));
-		return itemStackCollection.size();
+		return itemStackCollection.stream().filter(e -> corruptedGauntletDrops.contains(e.getId())).count();
 	}
 
 	private static final HashSet<String> raidsNameSet = new HashSet<>(
