@@ -41,7 +41,7 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.http.api.loottracker.LootRecordType;
 
 @Slf4j
-@PluginDescriptor(name = "Google Forms Submitter")
+@PluginDescriptor(name = "Google Form Submitter")
 public class GoogleFormSubmitterPlugin extends Plugin
 {
 	@Inject
@@ -63,8 +63,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private String killType;
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
 		List.of(WorldType.BETA_WORLD, WorldType.FRESH_START_WORLD, WorldType.QUEST_SPEEDRUNNING, WorldType.SEASONAL,
-				WorldType.TOURNAMENT_WORLD
-		));
+				WorldType.TOURNAMENT_WORLD));
 
 	//<editor-fold desc="Event Bus/Config Methods">
 	@Provides
@@ -215,18 +214,18 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private void handleLootReceived(String npcName, Collection<ItemStack> itemStackCollection)
 	{
-        if (config.ibbApiKey().isBlank())
-        {
-            return;
-        }
-        if (!isWhitelistedCharacter())
-        {
-            return;
-        }
-        if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
-        {
-            return;
-        }
+		if (config.ibbApiKey().isBlank())
+		{
+			return;
+		}
+		if (!isWhitelistedCharacter())
+		{
+			return;
+		}
+		if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
+		{
+			return;
+		}
 
 		List<NpcDropTuple> dropsToSubmit = this.handleItemStackCollection(npcName, itemStackCollection);
 		if (dropsToSubmit == null || dropsToSubmit.isEmpty())
@@ -240,10 +239,8 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			{
 				return;
 			}
-			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(
-				this.constructSubmissionUrl(url, npcDropTuple),
-				npcDropTuple.getItemName()
-			));
+			dropsToSubmit.forEach(npcDropTuple -> submitScreenshot(this.constructSubmissionUrl(url, npcDropTuple),
+																   npcDropTuple.getItemName()));
 		});
 	}
 
@@ -388,7 +385,8 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		}
 		catch (IOException e)
 		{
-			var message = new ChatMessageBuilder().append("There was an issue with the connection to the Google Form.");
+			var message = new ChatMessageBuilder().append(
+				"There was an issue with the connection to the Google Form" + ".");
 			chatMessageManager.queue(QueuedMessage.builder()
 												  .type(ChatMessageType.ITEM_EXAMINE)
 												  .runeLiteFormattedMessage(message.build())

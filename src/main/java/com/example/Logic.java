@@ -53,9 +53,8 @@ public class Logic
 				ItemID.CLUE_SCROLL_ELITE_23147, ItemID.CLUE_SCROLL_ELITE_23148, ItemID.CLUE_SCROLL_ELITE_23770,
 				ItemID.CLUE_SCROLL_ELITE_24253, ItemID.CLUE_SCROLL_ELITE_24773, ItemID.CLUE_SCROLL_ELITE_25498,
 				ItemID.CLUE_SCROLL_ELITE_25499, ItemID.CLUE_SCROLL_ELITE_25786, ItemID.CLUE_SCROLL_ELITE_25787,
-				ItemID.CLUE_SCROLL_ELITE_26943, ItemID.CLUE_SCROLL_ELITE_26944
-		));
-	
+				ItemID.CLUE_SCROLL_ELITE_26943, ItemID.CLUE_SCROLL_ELITE_26944));
+
 	static String getGauntletType(Collection<ItemStack> itemStackCollection)
 	{
 		var nonUniqueDrops = Logic.handleCorruptedGauntletDrops(itemStackCollection);
