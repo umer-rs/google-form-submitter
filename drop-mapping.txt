@@ -1,19 +1,19 @@
 Kree'arra,11826,Kree'arra,Armadyl helmet
 Kree'arra,11828,Kree'arra,Armadyl chestplate
 Kree'arra,11830,Kree'arra,Armadyl chainskirt
-Kree'arra,11802,Kree'arra,Armadyl hilt
+Kree'arra,11810,Kree'arra,Armadyl hilt
 General Graardor,11836,General Graardor,Bandos boots
 General Graardor,11832,General Graardor,Bandos chestplate
 General Graardor,11834,General Graardor,Bandos tassets
-General Graardor,11804,General Graardor,Bandos hilt
+General Graardor,11812,General Graardor,Bandos hilt
 Commander Zilyana,11838,Commander Zilyana,Saradomin sword
 Commander Zilyana,13256,Commander Zilyana,Saradomin's light
 Commander Zilyana,11785,Commander Zilyana,Armadyl crossbow
-Commander Zilyana,11806,Commander Zilyana,Saradomin hilt
+Commander Zilyana,11814,Commander Zilyana,Saradomin hilt
 K'ril Tsutsaroth,11824,K'ril Tsutsaroth,Zamorakian spear
 K'ril Tsutsaroth,11787,K'ril Tsutsaroth,Steam battlestaff
 K'ril Tsutsaroth,11791,K'ril Tsutsaroth,Staff of the dead
-K'ril Tsutsaroth,11808,K'ril Tsutsaroth,Zamorak hilt
+K'ril Tsutsaroth,11816,K'ril Tsutsaroth,Zamorak hilt
 Dagannoth Kings,6733,Dagannoth Kings,Archers ring
 Dagannoth Kings,6737,Dagannoth Kings,Berserker ring
 Dagannoth Kings,6731,Dagannoth Kings,Seers ring
@@ -35,9 +35,9 @@ Venenatis,27670,Venenatis,Fangs of venenatis (Venenatis)
 Venenatis,27687,Venenatis,Voidwaker gem (Venenatis)
 King Black Dragon,11284,King Black Dragon,Draconic visage (King Black Dragon)
 King Black Dragon,11920,King Black Dragon,Dragon pickaxe (King Black Dragon)
-Corporeal Beast,12817,Corporeal Beast,Elysian sigil
-Corporeal Beast,12825,Corporeal Beast,Arcane sigil
-Corporeal Beast,12821,Corporeal Beast,Spectral sigil
+Corporeal Beast,12819,Corporeal Beast,Elysian sigil
+Corporeal Beast,12827,Corporeal Beast,Arcane sigil
+Corporeal Beast,12823,Corporeal Beast,Spectral sigil
 Corporeal Beast,12833,Corporeal Beast,Holy elixir
 Corporeal Beast,12829,Corporeal Beast,Spirit shield
 Corporeal Beast,25521,Corporeal Beast,Jar of spirits
@@ -63,7 +63,7 @@ Kraken,12007,Kraken,Jar of dirt
 Demonic Gorilla,19529,Demonic Gorilla,Zenyte shard (Demonic gorilla)
 Chambers of Xeric,21003,Chambers of Xeric,Elder maul
 Chambers of Xeric,20997,Chambers of Xeric,Twisted bow
-Chambers of Xeric,21006,Chambers of Xeric,Kodai insignia
+Chambers of Xeric,21043,Chambers of Xeric,Kodai insignia
 Chambers of Xeric,13652,Chambers of Xeric,Dragon claws
 Chambers of Xeric,21018,Chambers of Xeric,Ancestral hat
 Chambers of Xeric,21021,Chambers of Xeric,Ancestral robe top
@@ -115,7 +115,7 @@ Theatre of Blood (HM),25744,Theatre of Blood (HM),Sanguine ornament kit
 Theatre of Blood (HM),25746,Theatre of Blood (HM),Sanguine dust
 Alchemical Hydra,22975,Alchemical Hydra,Brimstone ring piece (Alchemical Hydra)
 Alchemical Hydra,22988,Alchemical Hydra,Hydra tail (Alchemical Hydra)
-Alchemical Hydra,22978,Alchemical Hydra,Hydra's claw
+Alchemical Hydra,22966,Alchemical Hydra,Hydra's claw
 Alchemical Hydra,22983,Alchemical Hydra,Hydra leather
 Alchemical Hydra,23064,Alchemical Hydra,Jar of chemicals
 Sarachnis,23528,Sarachnis,Sarachnis cudgel
@@ -146,11 +146,11 @@ Phosani's Nightmare,24511,Phosani's Nightmare,Phosani's Harmonised orb
 Phosani's Nightmare,24495,Phosani's Nightmare,Phosani's Jar of dreams
 Phosani's Nightmare,25838,Phosani's Nightmare,Parasitic egg
 Nex,26235,Nex,Zaryte vambraces
-Nex,26374,Nex,Nihil horn
+Nex,26372,Nex,Nihil horn
 Nex,26382,Nex,Torva full helm (damaged)
 Nex,26384,Nex,Torva platebody (damaged)
 Nex,26386,Nex,Torva platelegs (damaged)
-Nex,26233,Nex,Ancient hilt
+Nex,26370,Nex,Ancient hilt
 Tombs of Amascut,27277,Tombs of Amascut,Tumeken's shadow (uncharged)
 Tombs of Amascut (XM),27277,Tombs of Amascut,Tumeken's shadow (uncharged)
 Tombs of Amascut,27226,Tombs of Amascut,Masori mask
