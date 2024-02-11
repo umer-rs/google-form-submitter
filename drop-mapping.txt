@@ -33,7 +33,7 @@ Vet'ion,27684,Vet'ion,Voidwaker blade (Vet'ion)
 Venenatis,12605,Venenatis,Treasonous ring (Venenatis)
 Venenatis,27670,Venenatis,Fangs of venenatis (Venenatis)
 Venenatis,27687,Venenatis,Voidwaker gem (Venenatis)
-King Black Dragon,11284,King Black Dragon,Draconic visage (King Black Dragon)
+King Black Dragon,11286,King Black Dragon,Draconic visage (King Black Dragon)
 King Black Dragon,11920,King Black Dragon,Dragon pickaxe (King Black Dragon)
 Corporeal Beast,12819,Corporeal Beast,Elysian sigil
 Corporeal Beast,12827,Corporeal Beast,Arcane sigil
@@ -89,7 +89,7 @@ Chambers of Xeric (CM),24670,Chambers of Xeric (CM),Twisted kit
 Chambers of Xeric (CM),22386,Chambers of Xeric (CM),Metamorphic dust
 Vorkath,22111,Vorkath,Dragonbone necklace
 Vorkath,11286,Vorkath,Draconic visage (Vorkath)
-Vorkath,22003,Vorkath,Skeletal visage
+Vorkath,22006,Vorkath,Skeletal visage
 Vorkath,22106,Vorkath,Jar of decay
 Grotesque Guardians,21739,Grotesque Guardians,Granite ring
 Grotesque Guardians,21736,Grotesque Guardians,Granite gloves
@@ -113,17 +113,19 @@ Theatre of Blood (HM),22328,Theatre of Blood (HM),Justiciar legguards (hm)
 Theatre of Blood (HM),25742,Theatre of Blood (HM),Holy ornament kit
 Theatre of Blood (HM),25744,Theatre of Blood (HM),Sanguine ornament kit
 Theatre of Blood (HM),25746,Theatre of Blood (HM),Sanguine dust
-Alchemical Hydra,22975,Alchemical Hydra,Brimstone ring piece (Alchemical Hydra)
+Alchemical Hydra,22969,Alchemical Hydra,Brimstone ring piece (Alchemical Hydra)
+Alchemical Hydra,22971,Alchemical Hydra,Brimstone ring piece (Alchemical Hydra)
+Alchemical Hydra,22973,Alchemical Hydra,Brimstone ring piece (Alchemical Hydra)
 Alchemical Hydra,22988,Alchemical Hydra,Hydra tail (Alchemical Hydra)
 Alchemical Hydra,22966,Alchemical Hydra,Hydra's claw
 Alchemical Hydra,22983,Alchemical Hydra,Hydra leather
 Alchemical Hydra,23064,Alchemical Hydra,Jar of chemicals
 Sarachnis,23528,Sarachnis,Sarachnis cudgel
 Sarachnis,23525,Sarachnis,Jar of eyes
-Gauntlet (Normal),23997,Gauntlet (Normal),Enhanced crystal weapon seed
+Gauntlet (Normal),25859,Gauntlet (Normal),Enhanced crystal weapon seed
 Gauntlet (Normal),4207,Gauntlet (Normal),Crystal weapon seed
 Gauntlet (Normal),23956,Gauntlet (Normal),Crystal armour seed
-Gauntlet (Corrupted),23997,Gauntlet (Corrupted),Enhanced crystal weapon seed (c)
+Gauntlet (Corrupted),25859,Gauntlet (Corrupted),Enhanced crystal weapon seed (c)
 Gauntlet (Corrupted),4207,Gauntlet (Corrupted),Crystal weapon seed (c)
 Gauntlet (Corrupted),23956,Gauntlet (Corrupted),Crystal armour seed (c)
 Nightmare of Ashihama,24422,Nightmare of Ashihama,Nightmare staff
