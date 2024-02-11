@@ -75,7 +75,7 @@ Chambers of Xeric,21034,Chambers of Xeric,Dexterous prayer scroll
 Chambers of Xeric,21079,Chambers of Xeric,Arcane prayer scroll
 Chambers of Xeric (CM),21003,Chambers of Xeric (CM),Elder maul
 Chambers of Xeric (CM),20997,Chambers of Xeric (CM),Twisted bow
-Chambers of Xeric (CM),21006,Chambers of Xeric (CM),Kodai insignia
+Chambers of Xeric (CM),21043,Chambers of Xeric (CM),Kodai insignia
 Chambers of Xeric (CM),13652,Chambers of Xeric (CM),Dragon claws
 Chambers of Xeric (CM),21018,Chambers of Xeric (CM),Ancestral hat
 Chambers of Xeric (CM),21021,Chambers of Xeric (CM),Ancestral robe top
@@ -149,9 +149,9 @@ Phosani's Nightmare,24495,Phosani's Nightmare,Phosani's Jar of dreams
 Phosani's Nightmare,25838,Phosani's Nightmare,Parasitic egg
 Nex,26235,Nex,Zaryte vambraces
 Nex,26372,Nex,Nihil horn
-Nex,26382,Nex,Torva full helm (damaged)
-Nex,26384,Nex,Torva platebody (damaged)
-Nex,26386,Nex,Torva platelegs (damaged)
+Nex,26376,Nex,Torva full helm (damaged)
+Nex,26378,Nex,Torva platebody (damaged)
+Nex,26380,Nex,Torva platelegs (damaged)
 Nex,26370,Nex,Ancient hilt
 Tombs of Amascut,27277,Tombs of Amascut,Tumeken's shadow (uncharged)
 Tombs of Amascut (XM),27277,Tombs of Amascut,Tumeken's shadow (uncharged)
@@ -181,7 +181,7 @@ Leviathan,26241,Leviathan,Virtus mask (Leviathan)
 Leviathan,26243,Leviathan,Virtus robe top (Leviathan)
 Leviathan,26245,Leviathan,Virtus robe bottom (Leviathan)
 Leviathan,28276,Leviathan,Chromium ingot (Leviathan)
-Leviathan,28338,Leviathan,Leviathan's lure
+Leviathan,28325,Leviathan,Leviathan's lure
 Leviathan,28283,Leviathan,Venator vestige
 Whisperer,26241,Whisperer,Virtus mask (Whisperer)
 Whisperer,26243,Whisperer,Virtus robe top (Whisperer)
