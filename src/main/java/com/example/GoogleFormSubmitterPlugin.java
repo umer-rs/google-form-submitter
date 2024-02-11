@@ -233,7 +233,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			return;
 		}
-		if (!config.allowSeasonalWorlds() && isUnsuitableWorld())
+		if (this.isUnsuitableWorld())
 		{
 			return;
 		}
