@@ -151,33 +151,44 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	}
 	//</editor-fold>
 
-	private void updateNameItemMapping() throws NumberFormatException
+	private void updateNameItemMapping()
 	{
-		String rawConfig;
-		if ((rawConfig = getMappingResource(config.dropMappingUrl())) == null)
+		try
 		{
-			rawConfig = config.itemDropMapping();
-		}
-		rawConfig = rawConfig.replaceAll("\\s*,\\s*", ",");
-		String[] rows = rawConfig.split("\n");
-		HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping = new HashMap<>();
-		for (String row : rows)
-		{
-			String[] elements = row.split(",");
-			if (elements.length != 4)
+			String rawConfig;
+			if ((rawConfig = getMappingResource(config.dropMappingUrl())) == null)
 			{
-				continue;
+				rawConfig = config.itemDropMapping();
 			}
-			String npcName = elements[0];
-			int itemId = Integer.parseInt(elements[1]);
-			String npcSubmissionName = elements[2];
-			String itemSubmissionName = elements[3];
+			rawConfig = rawConfig.replaceAll("\\s*,\\s*", ",");
+			String[] rows = rawConfig.split("\n");
+			HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping = new HashMap<>();
+			for (String row : rows)
+			{
+				String[] elements = row.split(",");
+				if (elements.length != 4)
+				{
+					continue;
+				}
+				String npcName = elements[0];
+				int itemId = Integer.parseInt(elements[1]);
+				String npcSubmissionName = elements[2];
+				String itemSubmissionName = elements[3];
 
-			NpcDropTuple mappedTuple = new NpcDropTuple(npcSubmissionName, itemSubmissionName);
-			HashMap<Integer, NpcDropTuple> value = nameItemMapping.getOrDefault(npcName, new HashMap<>());
-			value.put(itemId, mappedTuple);
-			nameItemMapping.put(npcName, value);
-			this.nameItemMapping = nameItemMapping;
+				NpcDropTuple mappedTuple = new NpcDropTuple(npcSubmissionName, itemSubmissionName);
+				HashMap<Integer, NpcDropTuple> value = nameItemMapping.getOrDefault(npcName, new HashMap<>());
+				value.put(itemId, mappedTuple);
+				nameItemMapping.put(npcName, value);
+				this.nameItemMapping = nameItemMapping;
+			}
+		}
+		catch (Exception e)
+		{
+			var message = new ChatMessageBuilder().append("Drop mapping has failed to be parsed.");
+			chatMessageManager.queue(QueuedMessage.builder()
+												  .type(ChatMessageType.ITEM_EXAMINE)
+												  .runeLiteFormattedMessage(message.build())
+												  .build());
 		}
 	}
 
