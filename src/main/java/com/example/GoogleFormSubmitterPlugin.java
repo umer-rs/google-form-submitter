@@ -134,7 +134,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		{
 			return;
 		}
-		processOnLootReceived(lootReceived);
+		this.processOnLootReceived(lootReceived);
 	}
 
 	@Subscribe
