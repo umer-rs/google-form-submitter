@@ -8,7 +8,7 @@ import net.runelite.client.game.ItemStack;
 
 public class Logic
 {
-	private static final HashSet<Integer> corruptedGauntletDrops = new HashSet<>(
+	private static final HashSet<Integer> gauntletUniques = new HashSet<>(
 		List.of(ItemID.GAUNTLET_CAPE, ItemID.CRYSTAL_SHARD, ItemID.CRYSTAL_WEAPON_SEED, ItemID.CRYSTAL_ARMOUR_SEED,
 				ItemID.ENHANCED_CRYSTAL_WEAPON_SEED, ItemID.YOUNGLLEF, ItemID.CLUE_SCROLL_ELITE,
 				ItemID.CLUE_SCROLL_ELITE_12074, ItemID.CLUE_SCROLL_ELITE_12075, ItemID.CLUE_SCROLL_ELITE_12076,
@@ -57,7 +57,7 @@ public class Logic
 
 	static String getGauntletType(Collection<ItemStack> itemStackCollection)
 	{
-		var nonUniqueDrops = Logic.handleCorruptedGauntletDrops(itemStackCollection);
+		var nonUniqueDrops = Logic.handleGauntletDrops(itemStackCollection);
 		if (nonUniqueDrops == 2)
 		{
 			return NpcType.GAUNTLET_REGULAR;
@@ -69,10 +69,9 @@ public class Logic
 		return NpcType.GAUNTLET_DIED;
 	}
 
-	private static int handleCorruptedGauntletDrops(Collection<ItemStack> itemStackCollection)
+	private static long handleGauntletDrops(Collection<ItemStack> itemStackCollection)
 	{
-		itemStackCollection.removeIf(e -> corruptedGauntletDrops.contains(e.getId()));
-		return itemStackCollection.size();
+		return itemStackCollection.stream().filter(e -> !gauntletUniques.contains(e.getId())).count();
 	}
 
 	private static final HashSet<String> raidsNameSet = new HashSet<>(
