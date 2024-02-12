@@ -313,7 +313,8 @@ public class GoogleFormSubmitterPlugin extends Plugin
 													  .type(ChatMessageType.ITEM_EXAMINE)
 													  .runeLiteFormattedMessage(message.build())
 													  .build());
-				return null;
+				log.info(keyValueString);
+				continue;
 			}
 			var key = keyValueArray[0];
 			var value = keyValueArray[1];
