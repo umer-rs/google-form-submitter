@@ -71,7 +71,7 @@ public class Logic
 
 	private static long handleGauntletDrops(Collection<ItemStack> itemStackCollection)
 	{
-		return itemStackCollection.stream().filter(e -> gauntletUniques.contains(e.getId())).count();
+		return itemStackCollection.stream().filter(e -> !gauntletUniques.contains(e.getId())).count();
 	}
 
 	private static final HashSet<String> raidsNameSet = new HashSet<>(
