@@ -177,18 +177,18 @@ Calvar'ion,27684,Calvar'ion,Voidwaker blade (Calvar'ion)
 Spindel,28276,Spindel,Treasonous ring (Spindel)
 Spindel,27670,Spindel,Fangs of venenatis (Spindel)
 Spindel,27687,Spindel,Voidwaker gem (Spindel)
-Leviathan,26241,Leviathan,Virtus mask (Leviathan)
-Leviathan,26243,Leviathan,Virtus robe top (Leviathan)
-Leviathan,26245,Leviathan,Virtus robe bottom (Leviathan)
-Leviathan,28276,Leviathan,Chromium ingot (Leviathan)
-Leviathan,28325,Leviathan,Leviathan's lure
-Leviathan,28283,Leviathan,Venator vestige
-Whisperer,26241,Whisperer,Virtus mask (Whisperer)
-Whisperer,26243,Whisperer,Virtus robe top (Whisperer)
-Whisperer,26245,Whisperer,Virtus robe bottom (Whisperer)
-Whisperer,28276,Whisperer,Chromium ingot (Whisperer)
-Whisperer,28323,Whisperer,Siren's staff
-Whisperer,28279,Whisperer,Bellator vestige
+The Leviathan,26241,Leviathan,Virtus mask (Leviathan)
+The Leviathan,26243,Leviathan,Virtus robe top (Leviathan)
+The Leviathan,26245,Leviathan,Virtus robe bottom (Leviathan)
+The Leviathan,28276,Leviathan,Chromium ingot (Leviathan)
+The Leviathan,28325,Leviathan,Leviathan's lure
+The Leviathan,28283,Leviathan,Venator vestige
+The Whisperer,26241,Whisperer,Virtus mask (Whisperer)
+The Whisperer,26243,Whisperer,Virtus robe top (Whisperer)
+The Whisperer,26245,Whisperer,Virtus robe bottom (Whisperer)
+The Whisperer,28276,Whisperer,Chromium ingot (Whisperer)
+The Whisperer,28323,Whisperer,Siren's staff
+The Whisperer,28279,Whisperer,Bellator vestige
 Vardorvis,26241,Vardorvis,Virtus mask (Vardorvis)
 Vardorvis,26243,Vardorvis,Virtus robe top (Vardorvis)
 Vardorvis,26245,Vardorvis,Virtus robe bottom (Vardorvis)
