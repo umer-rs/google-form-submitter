@@ -130,6 +130,11 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Subscribe
 	public void onLootReceived(LootReceived lootReceived)
 	{
+		if (lootReceived.getName().equals("The Whisperer"))
+		{
+			this.handleLootReceived(lootReceived.getName(), lootReceived.getItems());
+			return;
+		}
 		if (lootReceived.getType() == LootRecordType.NPC)
 		{
 			return;
