@@ -120,6 +120,13 @@ Alchemical Hydra,22988,Alchemical Hydra,Hydra tail (Alchemical Hydra)
 Alchemical Hydra,22966,Alchemical Hydra,Hydra's claw
 Alchemical Hydra,22983,Alchemical Hydra,Hydra leather
 Alchemical Hydra,23064,Alchemical Hydra,Jar of chemicals
+Unsired,13265,Abyssal Sire,Abyssal dagger (Abyssal Sire)
+Unsired,4151,Abyssal Sire,Abyssal whip (Abyssal Sire)
+Unsired,7979,Abyssal Sire,Abyssal head (Abyssal Sire)
+Unsired,13274,Abyssal Sire,Bludgeon piece
+Unsired,13275,Abyssal Sire,Bludgeon piece
+Unsired,13276,Abyssal Sire,Bludgeon piece
+Unsired,13277,Abyssal Sire,Jar of miasma
 Sarachnis,23528,Sarachnis,Sarachnis cudgel
 Sarachnis,23525,Sarachnis,Jar of eyes
 Gauntlet (Normal),25859,Gauntlet (Normal),Enhanced crystal weapon seed
