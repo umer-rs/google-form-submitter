@@ -14,7 +14,12 @@ import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.util.ImageUtil;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -24,6 +29,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Slf4j
 public class ImageCapture
 {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -33,6 +39,8 @@ public class ImageCapture
 	private OkHttpClient okHttpClient;
 	@Inject
 	private Gson gson;
+	@Inject
+	private ChatMessageManager chatMessageManager;
 	private HttpUrl ibbImageUploadUrl;
 
 	@Inject
@@ -55,7 +63,13 @@ public class ImageCapture
 		}
 		catch (IOException ex)
 		{
-			throw new RuntimeException(ex);
+			var message = new ChatMessageBuilder().append("Screenshot uploading failed.");
+			chatMessageManager.queue(QueuedMessage.builder()
+												  .type(ChatMessageType.ITEM_EXAMINE)
+												  .runeLiteFormattedMessage(message.build())
+												  .build());
+			log.info(ex.toString());
+			return "";
 		}
 	}
 
