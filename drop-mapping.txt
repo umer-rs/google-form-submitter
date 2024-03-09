@@ -91,11 +91,11 @@ Vorkath,22111,Vorkath,Dragonbone necklace
 Vorkath,11286,Vorkath,Draconic visage (Vorkath)
 Vorkath,22006,Vorkath,Skeletal visage
 Vorkath,22106,Vorkath,Jar of decay
-Grotesque Guardians,21739,Grotesque Guardians,Granite ring
-Grotesque Guardians,21736,Grotesque Guardians,Granite gloves
-Grotesque Guardians,21742,Grotesque Guardians,Granite hammer
-Grotesque Guardians,21730,Grotesque Guardians,Black tourmaline core
-Grotesque Guardians,21745,Grotesque Guardians,Jar of stone
+Dusk,21739,Grotesque Guardians,Granite ring
+Dusk,21736,Grotesque Guardians,Granite gloves
+Dusk,21742,Grotesque Guardians,Granite hammer
+Dusk,21730,Grotesque Guardians,Black tourmaline core
+Dusk,21745,Grotesque Guardians,Jar of stone
 Theatre of Blood,22486,Theatre of Blood,Scythe of vitur (uncharged)
 Theatre of Blood,22481,Theatre of Blood,Sanguinesti staff (uncharged)
 Theatre of Blood,22324,Theatre of Blood,Ghrazi rapier
