@@ -14,9 +14,9 @@ K'ril Tsutsaroth,11824,K'ril Tsutsaroth,Zamorakian spear
 K'ril Tsutsaroth,11787,K'ril Tsutsaroth,Steam battlestaff
 K'ril Tsutsaroth,11791,K'ril Tsutsaroth,Staff of the dead
 K'ril Tsutsaroth,11816,K'ril Tsutsaroth,Zamorak hilt
-Dagannoth Kings,6733,Dagannoth Kings,Archers ring
-Dagannoth Kings,6737,Dagannoth Kings,Berserker ring
-Dagannoth Kings,6731,Dagannoth Kings,Seers ring
+Dagannoth Supreme,6733,Dagannoth Kings,Archers ring
+Dagannoth Rex,6737,Dagannoth Kings,Berserker ring
+Dagannoth Prime,6731,Dagannoth Kings,Seers ring
 Kalphite Queen,11920,Kalphite Queen,Dragon pickaxe (Kalphite Queen)
 Kalphite Queen,3140,Kalphite Queen,Dragon chainbody (Kalphite Queen)
 Kalphite Queen,12885,Kalphite Queen,Jar of sand
