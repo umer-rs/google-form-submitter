@@ -76,4 +76,10 @@ public interface GoogleFormSubmitterConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(position = 20, keyName = "debugMode", name = "Enable Debug Mode", description = "")
+	default boolean debugMode()
+	{
+		return false;
+	}
 }

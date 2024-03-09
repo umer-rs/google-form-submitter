@@ -199,6 +199,13 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private List<NpcDropTuple> handleItemStackCollection(String npcName, Collection<ItemStack> itemStackCollection)
 	{
+		if (config.debugMode())
+		{
+			return itemStackCollection.stream()
+									  .map(ItemStack::getId)
+									  .map(id -> new NpcDropTuple("dummy", String.valueOf(id)))
+									  .collect(Collectors.toList());
+		}
 		if (!nameItemMapping.containsKey(npcName))
 		{
 			return null;
@@ -360,6 +367,17 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		try
 		{
 			var url = new URL(googleFormUrl);
+			if (config.debugMode())
+			{
+				var message = new ChatMessageBuilder().append("Debug mode enabled. Submission URL is sent to logs.");
+				chatMessageManager.queue(QueuedMessage.builder()
+													  .type(ChatMessageType.ITEM_EXAMINE)
+													  .runeLiteFormattedMessage(message.build())
+													  .build());
+				log.info(googleFormUrl);
+				System.err.println(googleFormUrl);
+				return;
+			}
 			var connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			if (connection.getResponseCode() != 200)
