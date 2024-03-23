@@ -208,3 +208,8 @@ Duke Sucellus,26245,Duke Sucellus,Virtus robe bottom (Duke Sucellus)
 Duke Sucellus,28276,Duke Sucellus,Chromium ingot (Duke Sucellus)
 Duke Sucellus,28321,Duke Sucellus,Eye of the duke
 Duke Sucellus,28281,Duke Sucellus,Magus vestige
+Fortis Colosseum,28919,Fortis Colosseum,Tonalztics of ralos
+Fortis Colosseum,28942,Fortis Colosseum,Echo crytal
+Fortis Colosseum,28933,Fortis Colosseum,Sunfire fanatic helm
+Fortis Colosseum,28936,Fortis Colosseum,Sunfire fanatic cuirass
+Fortis Colosseum,28939,Fortis Colosseum,Sunfire fanatic chausses
