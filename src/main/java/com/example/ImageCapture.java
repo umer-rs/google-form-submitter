@@ -13,6 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -97,6 +100,15 @@ public class ImageCapture
 				{
 					return imageUploadResponse.getData().getUrl();
 				}
+			}
+			catch (JsonSyntaxException | JsonIOException e)
+			{
+				log.error(response.body().string());
+				var message = new ChatMessageBuilder().append("Error with image hosting response.");
+				chatMessageManager.queue(QueuedMessage.builder()
+													  .type(ChatMessageType.ITEM_EXAMINE)
+													  .runeLiteFormattedMessage(message.build())
+													  .build());
 			}
 		}
 		return "";
