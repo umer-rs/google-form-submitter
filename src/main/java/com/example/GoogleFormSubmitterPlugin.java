@@ -23,8 +23,10 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -61,6 +63,11 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private HashMap<String, HashMap<Integer, NpcDropTuple>> nameItemMapping;
 	private String killType;
+	private boolean delayedMagicBoolean;
+	private String delayedNpcName;
+	private List<NpcDropTuple> delayedDropsToSubmit;
+	private final HashSet<String> delayedNpcs = new HashSet<>(
+		List.of("Nex", "Nightmare of Ashihama", "Phosani's Nightmare"));
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
 		List.of(WorldType.BETA_WORLD, WorldType.FRESH_START_WORLD, WorldType.QUEST_SPEEDRUNNING, WorldType.SEASONAL,
 				WorldType.TOURNAMENT_WORLD));
@@ -78,6 +85,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 		this.updateNameItemMapping();
 		this.imageCapture.updateApiKey(config.ibbApiKey());
 		this.killType = null;
+		this.resetDelayedLoot();
 	}
 
 	@Subscribe
@@ -125,6 +133,24 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			killType = chatMessage.contains("Expert Mode") ? NpcType.TOA_XM : chatMessage.contains(
 				"Entry Mode") ? NpcType.TOA_EM : NpcType.TOA_REGULAR;
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick e)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+		if (this.delayedNpcName != null && this.delayedDropsToSubmit != null)
+		{
+			if (this.delayedMagicBoolean = !this.delayedMagicBoolean)
+			{
+				return;
+			}
+			this.submitListOfNpcDropTuples(this.delayedNpcName, this.delayedDropsToSubmit);
+		}
+		this.resetDelayedLoot();
 	}
 
 	@Subscribe
@@ -249,6 +275,18 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			return;
 		}
 
+		if (this.delayedNpcs.contains(npcName))
+		{
+			this.delayedNpcName = npcName;
+			this.delayedDropsToSubmit = dropsToSubmit;
+			return;
+		}
+
+		this.submitListOfNpcDropTuples(npcName, dropsToSubmit);
+	}
+
+	private void submitListOfNpcDropTuples(String npcName, List<NpcDropTuple> dropsToSubmit)
+	{
 		CompletableFuture<String> screenshotUrl = this.takeScreenshot(npcName);
 		screenshotUrl.thenAccept(url -> {
 			if (url.isEmpty())
@@ -482,5 +520,12 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private boolean isUnsuitableWorld()
 	{
 		return !Collections.disjoint(client.getWorldType(), unsuitableWorldTypes);
+	}
+
+	private void resetDelayedLoot()
+	{
+		this.delayedMagicBoolean = false;
+		this.delayedNpcName = null;
+		this.delayedDropsToSubmit = null;
 	}
 }
