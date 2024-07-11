@@ -212,3 +212,5 @@ Fortis Colosseum,28919,Fortis Colosseum,Tonalztics of ralos (uncharged)
 Fortis Colosseum,28933,Fortis Colosseum,Sunfire fanatic helm
 Fortis Colosseum,28936,Fortis Colosseum,Sunfire fanatic cuirass
 Fortis Colosseum,28939,Fortis Colosseum,Sunfire fanatic chausses
+Tormented Demon,29574,Tormented Demon,Bone claw
+Tormented Demon,29580,Tormented Demon,Tormented synapse
