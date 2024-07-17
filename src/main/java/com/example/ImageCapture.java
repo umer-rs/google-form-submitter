@@ -91,19 +91,23 @@ public class ImageCapture
 			{
 				return "";
 			}
-			try (InputStream in = response.body().byteStream())
+			String responseBody = response.body().string();
+			try
 			{
-				ImageUploadResponse imageUploadResponse = gson.fromJson(
-					new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
-
+				var imageUploadResponse = gson.fromJson(responseBody, ImageUploadResponse.class);
 				if (imageUploadResponse.isSuccess())
 				{
 					return imageUploadResponse.getData().getUrl();
 				}
+				else {
+					log.error(imageUploadResponse.toString());
+					log.error(responseBody);
+				}
 			}
 			catch (JsonSyntaxException | JsonIOException e)
 			{
-				log.error(response.body().string());
+				log.error(responseBody);
+				log.error(String.valueOf(response.code()));
 				var message = new ChatMessageBuilder().append("Error with image hosting response.");
 				chatMessageManager.queue(QueuedMessage.builder()
 													  .type(ChatMessageType.ITEM_EXAMINE)
