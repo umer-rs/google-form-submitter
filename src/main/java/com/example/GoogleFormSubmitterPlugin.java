@@ -66,6 +66,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private boolean delayedMagicBoolean;
 	private String delayedNpcName;
 	private List<NpcDropTuple> delayedDropsToSubmit;
+	private final HashSet<String> lootReceivedNpcs = new HashSet<>(List.of("The Whisperer", "Araxxor"));
 	private final HashSet<String> delayedNpcs = new HashSet<>(
 		List.of("Nex", "Nightmare of Ashihama", "Phosani's Nightmare"));
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
@@ -156,7 +157,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Subscribe
 	public void onLootReceived(LootReceived lootReceived)
 	{
-		if (lootReceived.getName().equals("The Whisperer"))
+		if (lootReceivedNpcs.contains(lootReceived.getName()))
 		{
 			this.handleLootReceived(lootReceived.getName(), lootReceived.getItems());
 			return;
