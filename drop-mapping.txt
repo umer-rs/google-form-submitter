@@ -218,3 +218,4 @@ Araxxor,29799,Araxxor,Araxyte fang
 Araxxor,29792,Araxxor,Noxious blade
 Araxxor,29790,Araxxor,Noxious point
 Araxxor,29794,Araxxor,Noxious pommel
+Araxxor,29786,Araxxor,Jar of venom
