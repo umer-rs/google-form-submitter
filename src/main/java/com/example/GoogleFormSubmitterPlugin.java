@@ -396,59 +396,53 @@ public class GoogleFormSubmitterPlugin extends Plugin
 
 	private void submitScreenshot(String googleFormUrl, String itemName, boolean displayInChat)
 	{
+		var messageBuilder = new ChatMessageBuilder();
 		try
 		{
 			var url = new URL(googleFormUrl);
 			var connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
-			if (connection.getResponseCode() != 200)
+			connection.setInstanceFollowRedirects(false);
+			var responseCode = connection.getResponseCode();
+			if (responseCode == 200)
 			{
-				if (displayInChat)
-				{
-					var message = new ChatMessageBuilder().append("Google Form was submitted unsuccessfully.");
-					chatMessageManager.queue(QueuedMessage.builder()
-														  .type(ChatMessageType.ITEM_EXAMINE)
-														  .runeLiteFormattedMessage(message.build())
-														  .build());
-				}
-				log.info(connection.getResponseMessage());
-				log.info(googleFormUrl);
+				messageBuilder.append(String.format("Submission of %s successful.", itemName));
 			}
 			else
 			{
-				if (displayInChat)
+				switch (responseCode)
 				{
-					var message = new ChatMessageBuilder().append(
-						String.format("Submission of %s successful.", itemName));
-					chatMessageManager.queue(QueuedMessage.builder()
-														  .type(ChatMessageType.ITEM_EXAMINE)
-														  .runeLiteFormattedMessage(message.build())
-														  .build());
+					case 302:
+						messageBuilder.append("Google Form has closed. Please update the form ID.");
+						break;
+					case 400:
+						messageBuilder.append("Google Form was filled in improperly.");
+						break;
+					default:
+						messageBuilder.append("Google Form has been submitted unsuccessfully.");
+						break;
 				}
+				log.info(String.format("[%d] - %s", responseCode, googleFormUrl));
 			}
 		}
 		catch (MalformedURLException e)
 		{
-			if (displayInChat)
-			{
-				var message = new ChatMessageBuilder().append("The URL constructed was invalid.");
-				chatMessageManager.queue(QueuedMessage.builder()
-													  .type(ChatMessageType.ITEM_EXAMINE)
-													  .runeLiteFormattedMessage(message.build())
-													  .build());
-			}
+			messageBuilder.append("The URL constructed was invalid.");
 			log.info(googleFormUrl);
+			log.info(e.toString());
 		}
 		catch (IOException e)
 		{
-			var message = new ChatMessageBuilder().append(
-				"There was an issue with the connection to the Google Form" + ".");
-			chatMessageManager.queue(QueuedMessage.builder()
-												  .type(ChatMessageType.ITEM_EXAMINE)
-												  .runeLiteFormattedMessage(message.build())
-												  .build());
+			messageBuilder.append("There was an issue with the connection to the Google Form.");
 			log.info(googleFormUrl);
 			log.info(e.toString());
+		}
+		if (displayInChat)
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+												  .type(ChatMessageType.ITEM_EXAMINE)
+												  .runeLiteFormattedMessage(messageBuilder.build())
+												  .build());
 		}
 	}
 
