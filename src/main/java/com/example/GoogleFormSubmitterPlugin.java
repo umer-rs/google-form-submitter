@@ -423,6 +423,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 						break;
 				}
 				log.info(googleFormUrl);
+				log.info(responseCode);
 			}
 		}
 		catch (MalformedURLException e)
