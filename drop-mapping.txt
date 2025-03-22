@@ -219,3 +219,7 @@ Araxxor,29792,Araxxor,Noxious blade
 Araxxor,29790,Araxxor,Noxious point
 Araxxor,29794,Araxxor,Noxious pommel
 Araxxor,29786,Araxxor,Jar of venom
+The Hueycoatl,30066,Hueycoatl,Tome of earth (empty)
+The Hueycoatl,30070,Hueycoatl,Dragon hunter wand
+Branda the Fire Queen,30631,Royal Titans,Fire element staff crown
+Eldric the Ice King,30628,Royal Titans,Ice element staff crown
