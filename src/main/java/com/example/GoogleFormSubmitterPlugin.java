@@ -68,7 +68,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private List<NpcDropTuple> delayedDropsToSubmit;
 	private final HashSet<String> lootReceivedNpcs = new HashSet<>(List.of("The Whisperer", "Araxxor"));
 	private final HashSet<String> delayedNpcs = new HashSet<>(
-		List.of("Nex", "Nightmare of Ashihama", "Phosani's Nightmare"));
+		List.of("Nex", "Nightmare of Ashihama", "Phosani's Nightmare", "The Hueycoatl"));
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
 		List.of(WorldType.BETA_WORLD, WorldType.FRESH_START_WORLD, WorldType.QUEST_SPEEDRUNNING, WorldType.SEASONAL,
 				WorldType.TOURNAMENT_WORLD));
