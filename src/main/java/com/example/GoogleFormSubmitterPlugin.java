@@ -66,7 +66,7 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private boolean delayedMagicBoolean;
 	private String delayedNpcName;
 	private List<NpcDropTuple> delayedDropsToSubmit;
-	private final HashSet<String> lootReceivedNpcs = new HashSet<>(List.of("The Whisperer", "Araxxor"));
+	private final HashSet<String> lootReceivedNpcs = new HashSet<>(List.of("The Whisperer", "Araxxor", "Branda the Fire Queen", "Eldric the Ice King"));
 	private final HashSet<String> delayedNpcs = new HashSet<>(
 		List.of("Nex", "Nightmare of Ashihama", "Phosani's Nightmare", "The Hueycoatl"));
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
