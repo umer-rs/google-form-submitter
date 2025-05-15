@@ -34,7 +34,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -66,7 +66,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	private boolean delayedMagicBoolean;
 	private String delayedNpcName;
 	private List<NpcDropTuple> delayedDropsToSubmit;
-	private final HashSet<String> lootReceivedNpcs = new HashSet<>(List.of("The Whisperer", "Araxxor", "Branda the Fire Queen", "Eldric the Ice King"));
 	private final HashSet<String> delayedNpcs = new HashSet<>(
 		List.of("Nex", "Nightmare of Ashihama", "Phosani's Nightmare", "The Hueycoatl"));
 	private final HashSet<WorldType> unsuitableWorldTypes = new HashSet<>(
@@ -157,11 +156,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	@Subscribe
 	public void onLootReceived(LootReceived lootReceived)
 	{
-		if (lootReceivedNpcs.contains(lootReceived.getName()))
-		{
-			this.handleLootReceived(lootReceived.getName(), lootReceived.getItems());
-			return;
-		}
 		if (lootReceived.getType() == LootRecordType.NPC)
 		{
 			return;
@@ -170,10 +164,9 @@ public class GoogleFormSubmitterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
-	{
-		var npc = npcLootReceived.getNpc();
-		var lootReceived = npcLootReceived.getItems();
+	public void onServerNpcLoot(ServerNpcLoot serverNpcLoot) {
+		var npc = serverNpcLoot.getComposition();
+		var lootReceived = serverNpcLoot.getItems();
 		var npcName = npc.getName();
 		if (npcName == null)
 		{
