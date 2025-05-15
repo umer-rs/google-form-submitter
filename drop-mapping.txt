@@ -129,12 +129,12 @@ Unsired,13276,Abyssal Sire,Bludgeon piece
 Unsired,13277,Abyssal Sire,Jar of miasma
 Sarachnis,23528,Sarachnis,Sarachnis cudgel
 Sarachnis,23525,Sarachnis,Jar of eyes
-Gauntlet (Normal),25859,Gauntlet (Corrupted),Enhanced crystal weapon seed (c)
-Gauntlet (Normal),4207,Gauntlet (Corrupted),Crystal weapon seed (c)
-Gauntlet (Normal),23956,Gauntlet (Corrupted),Crystal armour seed (c)
-Gauntlet (Corrupted),25859,Gauntlet (Corrupted),Enhanced crystal weapon seed (c)
-Gauntlet (Corrupted),4207,Gauntlet (Corrupted),Crystal weapon seed (c)
-Gauntlet (Corrupted),23956,Gauntlet (Corrupted),Crystal armour seed (c)
+Crystalline Hunllef,25859,Gauntlet (Normal),Enhanced crystal weapon seed
+Crystalline Hunllef,4207,Gauntlet (Normal),Crystal weapon seed
+Crystalline Hunllef,23956,Gauntlet (Normal),Crystal armour seed
+Corrupted Hunllef,25859,Gauntlet (Corrupted),Enhanced crystal weapon seed (c)
+Corrupted Hunllef,4207,Gauntlet (Corrupted),Crystal weapon seed (c)
+Corrupted Hunllef,23956,Gauntlet (Corrupted),Crystal armour seed (c)
 Nightmare of Ashihama,24422,Nightmare of Ashihama,Nightmare staff
 Nightmare of Ashihama,24419,Nightmare of Ashihama,Inquisitor's great helm
 Nightmare of Ashihama,24420,Nightmare of Ashihama,Inquisitor's hauberk
