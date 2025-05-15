@@ -2,9 +2,6 @@ package com.example;
 
 public class NpcType
 {
-	public static final String GAUNTLET_REGULAR = "Gauntlet (Normal)";
-	public static final String GAUNTLET_CORRUPTED = "Gauntlet (Corrupted)";
-	public static final String GAUNTLET_DIED = "Gauntlet (Died)";
 	public static final String COX_REGULAR = "Chambers of Xeric";
 	public static final String COX_CM = "Chambers of Xeric (CM)";
 	public static final String TOB_REGULAR = "Theatre of Blood";

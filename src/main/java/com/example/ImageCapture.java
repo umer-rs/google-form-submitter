@@ -1,21 +1,17 @@
 package com.example;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;

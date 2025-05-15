@@ -241,10 +241,6 @@ public class GoogleFormSubmitterPlugin extends Plugin
 			npcName = Logic.getRaidsType(npcName, killType);
 			killType = null;
 		}
-		else if (npcName.equals("The Gauntlet"))
-		{
-			npcName = Logic.getGauntletType(lootReceived.getItems());
-		}
 		this.handleLootReceived(npcName, lootReceived.getItems());
 	}
 
