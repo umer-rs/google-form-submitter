@@ -227,4 +227,3 @@ Yama,30750,Yama,Oathplate helm
 Yama,30753,Yama,Oathplate chest
 Yama,30756,Yama,Oathplate legs
 Yama,30759,Yama,Soulflame horn
-Yama,30765,Yama,Oathplate shards
