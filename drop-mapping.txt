@@ -143,7 +143,6 @@ Nightmare of Ashihama,24417,Nightmare of Ashihama,Inquisitor's mace
 Nightmare of Ashihama,24517,Nightmare of Ashihama,Eldritch orb
 Nightmare of Ashihama,24514,Nightmare of Ashihama,Volatile orb
 Nightmare of Ashihama,24511,Nightmare of Ashihama,Harmonised orb
-Nightmare of Ashihama,24495,Nightmare of Ashihama,Jar of dreams
 Phosani's Nightmare,24422,Phosani's Nightmare,Nightmare staff
 Phosani's Nightmare,24419,Phosani's Nightmare,Inquisitor's great helm
 Phosani's Nightmare,24420,Phosani's Nightmare,Inquisitor's hauberk
@@ -152,7 +151,6 @@ Phosani's Nightmare,24417,Phosani's Nightmare,Inquisitor's mace
 Phosani's Nightmare,24517,Phosani's Nightmare,Eldritch orb
 Phosani's Nightmare,24514,Phosani's Nightmare,Volatile orb
 Phosani's Nightmare,24511,Phosani's Nightmare,Harmonised orb
-Phosani's Nightmare,24495,Phosani's Nightmare,Jar of dreams
 Phosani's Nightmare,25838,Phosani's Nightmare,Parasitic egg
 Nex,26235,Nex,Zaryte vambraces
 Nex,26372,Nex,Nihil horn
