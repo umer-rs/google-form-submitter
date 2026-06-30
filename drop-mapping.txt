@@ -228,5 +228,5 @@ Yama,30759,Yama,Soulflame horn
 Doom of Mokhaiotl,31088,Doom of Mokhaiotl,Avernic treads
 Doom of Mokhaiotl,31115,Doom of Mokhaiotl,Eye of ayak (uncharged)
 Doom of Mokhaiotl,31109,Doom of Mokhaiotl,Mokhaiotl cloth
-Maggot King,xxxxx,Maggot King,Crimson kisten
-Maggot King,xxxxx,Maggot King,Alpha venator tooth
+Maggot King,33631,Maggot King,Crimson kisten
+Maggot King,33634,Maggot King,Elder venator fang
