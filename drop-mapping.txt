@@ -230,3 +230,8 @@ Doom of Mokhaiotl,31115,Doom of Mokhaiotl,Eye of ayak (uncharged)
 Doom of Mokhaiotl,31109,Doom of Mokhaiotl,Mokhaiotl cloth
 Maggot King,33631,Maggot King,Crimson kisten
 Maggot King,33634,Maggot King,Elder venator fang
+Fractured Archive,34679,Fractured Archive,Horn of Bran
+Fractured Archive,34681,Fractured Archive,Ascension crossbows
+Fractured Archive,34717,Fractured Archive,Obligator (uncharged)
+Fractured Archive,34719,Fractured Archive,Rondache
+Fractured Archive,34727,Fractured Archive,Zorya's tome
